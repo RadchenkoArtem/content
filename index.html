@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Формули вірусних постів</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Geologica:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F2EB;
+    --surface: #FFFFFF;
+    --ink: #1A1814;
+    --ink2: #5A5650;
+    --ink3: #9A9590;
+    --accent: #C84B2F;
+    --accent2: #E8A030;
+    --border: #E0DBD2;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Geologica', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .page { max-width: 760px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+  /* Hero */
+  .hero { margin-bottom: 3.5rem; }
+
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink3); margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero-eyebrow::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  .hero-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 700; line-height: 1.1; letter-spacing: -0.03em;
+    color: var(--ink); margin-bottom: 1.25rem;
+  }
+  .hero-title em { color: var(--accent); font-style: normal; }
+
+  .hero-desc {
+    font-size: 16px; color: var(--ink2); max-width: 520px; line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  /* Stats row */
+  .stats {
+    display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem; border-bottom: 1px solid var(--border);
+  }
+  .stat-item { }
+  .stat-num {
+    font-family: 'Unbounded', sans-serif; font-size: 1.75rem; font-weight: 700;
+    color: var(--ink); line-height: 1;
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-size: 12px; color: var(--ink3); margin-top: 4px; letter-spacing: 0.04em; }
+
+  /* Blocks */
+  .block { margin-bottom: 2.5rem; }
+
+  .block-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 1rem;
+  }
+  .block-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--ink); color: #fff;
+    font-family: 'Unbounded', sans-serif; font-size: 9px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .block-title {
+    font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3);
+  }
+  .block-divider { flex: 1; height: 1px; background: var(--border); }
+
+  /* Lesson cards grid */
+  .lessons-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+
+  .lesson-card {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1rem 1.25rem;
+    text-decoration: none; color: var(--ink);
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+    cursor: pointer;
+  }
+  .lesson-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 16px rgba(200,75,47,0.1);
+    transform: translateY(-1px);
+  }
+  .lesson-card:active { transform: translateY(0); }
+
+  .lesson-num {
+    font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 600;
+    color: var(--ink3); flex-shrink: 0; min-width: 28px;
+  }
+  .lesson-info { flex: 1; min-width: 0; }
+  .lesson-title {
+    font-size: 13px; font-weight: 500; color: var(--ink);
+    line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .lesson-sub {
+    font-size: 11px; color: var(--ink3); margin-top: 2px;
+  }
+  .lesson-arrow {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--bg); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: background 0.15s, border-color 0.15s;
+  }
+  .lesson-card:hover .lesson-arrow {
+    background: var(--accent); border-color: var(--accent);
+  }
+  .lesson-arrow svg {
+    width: 10px; height: 10px; color: var(--ink3);
+    transition: color 0.15s;
+  }
+  .lesson-card:hover .lesson-arrow svg { color: #fff; }
+
+  /* CTA bottom */
+  .cta-block {
+    margin-top: 3rem; background: var(--ink); border-radius: 12px;
+    padding: 2rem; display: flex; align-items: center; justify-content: space-between;
+    gap: 1.5rem; flex-wrap: wrap;
+  }
+  .cta-text { }
+  .cta-title {
+    font-family: 'Unbounded', sans-serif; font-size: 1rem; font-weight: 600;
+    color: #F0EDE6; margin-bottom: 4px;
+  }
+  .cta-sub { font-size: 13px; color: rgba(255,255,255,0.45); }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: #fff; border: none; border-radius: 6px;
+    padding: 12px 20px; font-family: 'Geologica', sans-serif;
+    font-size: 14px; font-weight: 500; text-decoration: none;
+    cursor: pointer; transition: background 0.15s; white-space: nowrap; flex-shrink: 0;
+  }
+  .cta-btn:hover { background: #a83a20; }
+  .cta-btn svg { width: 14px; height: 14px; }
+
+  .footer {
+    margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--ink3); display: flex;
+    justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+
+  @media (max-width: 540px) {
+    .lessons-grid { grid-template-columns: 1fr; }
+    .stats { gap: 1.5rem; }
+    .cta-block { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-eyebrow">Програма · 12 уроків</div>
+    <h1 class="hero-title">Формули<br><em>вірусних</em><br>постів</h1>
+    <p class="hero-desc">Система з 12 перевірених форматів для експертів, коучів і підприємців. Кожен урок — готова структура + промпт для ШІ.</p>
+
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-num">12<span>.</span></div>
+        <div class="stat-label">формул постів</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">4<span>.</span></div>
+        <div class="stat-label">блоки контенту</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">12<span>.</span></div>
+        <div class="stat-label">промптів для ШІ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Block 1 -->
+  <div class="block">
+    <div class="block-header">
+      <div class="block-num">1</div>
+      <div class="block-title">Блок: Охоплення</div>
+      <div class="block-divider"></div>
+    </div>
+    <div class="lessons-grid">
+      <a href="./urok-1.html" class="lesson-card">
+        <div class="lesson-num">01</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Розвінчання міфів</div>
+          <div class="lesson-sub">Охоплення · Нова аудиторія</div>
+        </div>
+        <div class="lesson-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+      <a href="./urok-2.html" class="lesson-card">
+        <div class="lesson-num">02</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Несподіване питання</div>
+          <div class="lesson-sub">Охоплення · Зупинити скрол</div>
+        </div>
+        <div class="lesson-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+      <a href="./urok-3.html" class="lesson-card">
+        <div class="lesson-num">03</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Позиція на гучну тему</div>
+          <div class="lesson-sub">Охоплення · Інфопривід</div>
+        </div>
+        <div class="lesson-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Block 2 -->
+  <div class="block">
+    <div class="block-header">
+      <div class="block-num">2</div>
+      <div class="block-title">Блок: Впізнавання</div>
+      <div class="block-divider"></div>
+    </div>
+    <div class="lessons-grid">
+      <a href="./urok-4.html" class="lesson-card">
+        <div class="lesson-num">04</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Список як дзеркало</div>
+          <div class="lesson-sub">Впізнавання · «Це про мене»</div>
+        </div>
+        <div class="lesson-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+      <a href="./urok-5.html" class="lesson-card">
+        <div class="lesson-num">05</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Бути [професія]</div>
+          <div class="lesson-sub">Впізнавання · Ідентичність</div>
+        </div>
+        <div class="lesson-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+      <a href="./urok-6.html" class="lesson-card">
+        <div class="lesson-num">06</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Різниця між А і Б</div>
+          <div class="lesson-sub">Впізнавання · Прогрів</div>
+        </div>
+        <div class="lesson-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Block 3 -->
+  <div class="block">
+    <div class="block-header">
+      <div class="block-num">3</div>
+      <div class="block-title">Блок: Довіра</div>
+      <div class="block-divider"></div>
+    </div>
+    <div class="lessons-grid">
+      <a href="./urok-7.html" class="lesson-card">
+        <div class="lesson-num">07</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Переосмислення поняття</div>
+          <div class="lesson-sub">Довіра · Глибина думки</div>
+        </div>
+        <div class="lesson-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+      <a href="./urok-8.html" class="lesson-card">
+        <div class="lesson-num">08</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Особиста історія</div>
+          <div class="lesson-sub">Довіра · Метод у дії</div>
+        </div>
+        <div class="lesson-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+      <a href="./urok-9.html" class="lesson-card">
+        <div class="lesson-num">09</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Авторське поняття</div>
+          <div class="lesson-sub">Довіра · Унікальна позиція</div>
+        </div>
+        <div class="lesson-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Block 4 -->
+  <div class="block">
+    <div class="block-header">
+      <div class="block-num">4</div>
+      <div class="block-title">Блок: Дія</div>
+      <div class="block-divider"></div>
+    </div>
+    <div class="lessons-grid">
+      <a href="./urok-10.html" class="lesson-card">
+        <div class="lesson-num">10</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Провокація + 3 сценарії</div>
+          <div class="lesson-sub">Дія · Усвідомлення ризику</div>
+        </div>
+        <div class="lesson-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+      <a href="./urok-11.html" class="lesson-card">
+        <div class="lesson-num">11</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Що, якби…</div>
+          <div class="lesson-sub">Дія · Розрахунок втрат</div>
+        </div>
+        <div class="lesson-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+      <a href="./urok-12.html" class="lesson-card">
+        <div class="lesson-num">12</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Ви вже готові</div>
+          <div class="lesson-sub">Дія · Конверсія</div>
+        </div>
+        <div class="lesson-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <div class="cta-text">
+      <div class="cta-title">Перевірте свій пост</div>
+      <div class="cta-sub">Тренажер для оцінки після написання</div>
+    </div>
+    <a href="https://post-analyze.netlify.app/" target="_blank" class="cta-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Відкрити тренажер
+    </a>
+  </div>
+
+  <div class="footer">
+    <span>Формули вірусних постів</span>
+    <span>12 уроків · 4 блоки</span>
+  </div>
+
+</div>
+</body>
+</html>

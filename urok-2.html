@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 2 — Несподіване питання</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600&family=Geologica:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F2EB;
+    --surface: #FFFFFF;
+    --ink: #1A1814;
+    --ink2: #5A5650;
+    --ink3: #9A9590;
+    --accent: #C84B2F;
+    --accent2: #E8A030;
+    --border: #E0DBD2;
+    --prompt-bg: #1A1814;
+    --prompt-text: #F0EDE6;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Geologica', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  .breadcrumb {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .breadcrumb span { color: var(--accent); }
+
+  .lesson-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 4px 12px;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--ink3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+  }
+
+  .section {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 1.25rem;
+  }
+  .section-label .icon { font-size: 16px; }
+
+  p { color: var(--ink2); margin-bottom: 0.75rem; font-size: 15px; }
+  p:last-child { margin-bottom: 0; }
+
+  .formula {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .formula-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .formula-row:last-child { border-bottom: none; }
+  .formula-key {
+    background: var(--bg);
+    padding: 14px 16px;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    padding-top: 16px;
+  }
+  .formula-val {
+    padding: 14px 16px;
+    font-size: 14px;
+    color: var(--ink2);
+    line-height: 1.6;
+  }
+
+  .example-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+  .example-note {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .example-text { font-size: 14px; color: var(--ink2); line-height: 1.75; font-style: italic; }
+  .example-text p { font-size: 14px; font-style: italic; }
+  .example-highlight {
+    margin: 1rem 0;
+    padding: 0.75rem 1rem;
+    background: var(--bg);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink);
+  }
+
+  .topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 0.5rem;
+  }
+  .topic-tag {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: var(--ink2);
+  }
+
+  .task-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 8px 8px 0;
+    padding: 1.25rem 1.5rem;
+  }
+  .task-block p { font-size: 14px; }
+  .task-note {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--ink3);
+    font-style: italic;
+  }
+
+  .prompt-wrapper {
+    background: var(--prompt-bg);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .prompt-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .prompt-header-label {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+  .copy-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    font-family: 'Geologica', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .copy-btn:hover { background: #a83a20; }
+  .copy-btn:active { transform: scale(0.97); }
+  .copy-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .prompt-body { padding: 1.5rem 20px 1.75rem; }
+  .prompt-text {
+    font-family: 'Geologica', sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--prompt-text);
+    white-space: pre-wrap;
+    margin: 0;
+  }
+
+  .copy-toast {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #6fcf97;
+    margin-top: 10px;
+    padding-left: 4px;
+  }
+  .copy-toast.show { display: flex; }
+
+  .trainer-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    text-decoration: none;
+    color: var(--ink);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    margin-top: 1.5rem;
+  }
+  .trainer-link:hover {
+    border-color: var(--accent);
+    box-shadow: 0 2px 12px rgba(200,75,47,0.08);
+  }
+  .trainer-link-text { font-size: 15px; font-weight: 500; }
+  .trainer-link-sub { font-size: 13px; color: var(--ink3); margin-top: 2px; }
+  .trainer-arrow {
+    width: 32px; height: 32px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .trainer-arrow svg { width: 14px; height: 14px; color: #fff; }
+
+  .footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--ink3);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 520px) {
+    .formula-row { grid-template-columns: 1fr; }
+    .formula-key { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  }
+
+    .main-link {
+    transition: all 0.15s;
+  }
+
+  .main-link a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .main-link:hover {
+    transform: scale(0.95);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="breadcrumb">
+    Формули вірусних постів <span>›</span> Блок: Охоплення <span>›</span> Урок 2 з 12
+  </div>
+
+  <div class="lesson-tag">Урок 2 з 12</div>
+  <div class="lesson-tag main-link"><a href="./index.html"> Головна сторінка </a></div>
+  <div class="lesson-tag main-link"><a href="./urok-3.html"> Наступний урок </a></div>
+
+  <h1>Несподіване<br>питання</h1>
+  <div class="subtitle">Блок 1 — Охоплення</div>
+
+  <!-- Коли використовувати -->
+  <div class="section">
+    <div class="section-label"><span class="icon">🕐</span> Коли використовувати</div>
+    <p>Коли хочете зупинити скрол і змусити людину подивитись на знайому тему під іншим кутом. Цей формат працює на широку аудиторію. Навіть ті, хто вас не знає, зупиняться на провокативному заголовку або несподіваному повороті.</p>
+    <p>Ідеально підходить коли у вашій ніші є «загальновідома правда», і ви бачите що вона неповна або хибна. Ваше питання руйнує звичну рамку і пропонує нову.</p>
+  </div>
+
+  <!-- Як це працює -->
+  <div class="section">
+    <div class="section-label"><span class="icon">⚙️</span> Як це працює</div>
+    <p>Ви берете тему яку всі вважають зрозумілою, і ставите питання яке перевертає звичний погляд. Не «як вирішити проблему», а «чи правильно ми її формулюємо?».</p>
+    <p>Заголовок вже має містити провокацію або парадокс, щоб читач зупинився і подумав «стривайте, а як це?». Далі ви розгортаєте ідею через паралельні приклади або короткі сцени — показуєте що «очевидне» насправді не таке просте.</p>
+    <p>Несподіване питання в середині посту — це точка зламу. Читач завмирає. Саме тут народжується резонанс. Фінал дає не відповідь, а новий спосіб думати про тему.</p>
+  </div>
+
+  <!-- Формула -->
+  <div class="section">
+    <div class="section-label"><span class="icon">📐</span> Формула</div>
+    <div class="formula">
+      <div class="formula-row">
+        <div class="formula-key">Заголовок-провокація</div>
+        <div class="formula-val">Твердження яке руйнує поділ «ми/вони» або перевертає очевидне. «МИ ВСІ [щось несподіване]» або «[Звичне поняття] — це не те, що ви думаєте».</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Паралельні приклади</div>
+        <div class="formula-val">2–4 пари: «одні роблять [А], інші — [Б]». Суть одна, форма різна. Показує що межа між «нормою» і «проблемою» умовна.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Несподіване питання</div>
+        <div class="formula-val">Одне питання яке перевертає кут зору. Не «як це виправити», а «а що якщо ми неправильно це називаємо?». Виділити в окремий абзац.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Розгортання</div>
+        <div class="formula-val">2–3 конкретних приклади або міні-сцени які відповідають на питання. Без теорії — тільки впізнавані ситуації.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Нова рамка</div>
+        <div class="formula-val">Ваш висновок — не «правильна відповідь», а новий спосіб дивитись на тему. 1–2 речення.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Заклик до дії</div>
+        <div class="formula-val">Запитання до аудиторії яке продовжує думку. Або «збережіть / поширте для своїх читачів, якщо відгукнулось».</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Приклад -->
+  <div class="section">
+    <div class="section-label"><span class="icon">✍️</span> Приклад готового посту</div>
+    <div class="example-card">
+      <div class="example-note">⚠️ Тільки для ознайомлення — не копіювати</div>
+      <div class="example-text">
+        <p><strong style="font-style:normal; color: var(--ink);">МИ ВСІ ПРОКРАСТИНУЄМО.</strong></p>
+        <p>(просто деяким пощастило з більш соціально прийнятними формами)</p>
+        <p>Є люди, яких засуджують за прокрастинацію.<br>І є люди, яких за неї нагороджують підвищенням і повагою колег.</p>
+        <p>Один відкладає звіт і дивиться серіали.<br>Інший відкладає важку розмову — і заповнює час «терміновими» задачами.</p>
+        <p>Один уникає дзвінка клієнту.<br>Інший проводить п'яту нараду замість того щоб просто прийняти рішення.</p>
+        <p>Механізм той самий, нервова система є у всіх.</p>
+        <div class="example-highlight">
+          Коли людина приходить і каже «я прокрастинатор» —<br>
+          більшість одразу шукає техніку щоб «змусити себе».<br><br>
+          Я питаю інакше: а чого саме ви уникаєте?<br><br>
+          І людина завмирає.
+        </div>
+        <p>Бо питання неправильне за всіма стандартами продуктивності.<br>Але саме в цій відповіді — вся правда.</p>
+        <p>Який дискомфорт дає вам та задача яку ви відкладаєте?<br>Яку невизначеність ви уникаєте?<br>Якого провалу боїтесь, навіть якщо завдання просте?</p>
+        <p>Прокрастинація — це не лінь.<br>Це захисна реакція на щось, що здається небезпечним.<br>І поки ми боремось з симптомом, причина нікуди не дівається.</p>
+        <p>Збережіть якщо впізнали себе.<br>І напишіть у коментарях: що ви найчастіше відкладаєте? 👇</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Теми -->
+  <div class="section">
+    <div class="section-label"><span class="icon">💡</span> Варіанти тем для вашої ніші</div>
+    <p>Знайдіть «загальновідому правду» у своїй темі та поставте несподіване питання:</p>
+    <div class="topics">
+      <span class="topic-tag">«МИ ВСІ МАЄМО МЕЖІ» (просто деяким легше їх називати межами, а не примхами)</span>
+      <span class="topic-tag">«МИ ВСІ ХОЧЕМО ВИЗНАННЯ» (просто одні просять відкрито, інші — поведінкою)</span>
+      <span class="topic-tag">«МИ ВСІ БОЇМОСЬ ПРОВАЛУ» (просто деякі називають це «перфекціонізмом»)</span>
+      <span class="topic-tag">«МИ ВСІ ПРОДАЄМО» (просто одні роблять це усвідомлено, інші — непомітно для себе)</span>
+      <span class="topic-tag">«МИ ВСІ ВИГОРАЄМО» (просто деяким пощастило називати це «відпусткою»)</span>
+      <span class="topic-tag">«МИ ВСІ МАЄМО СТРАТЕГІЮ» (просто не всі знають що вона у них є)</span>
+    </div>
+    <p style="margin-top: 1rem; font-size: 13px; color: var(--ink3); font-style: italic;">Підказка: найсильніші теми — ті де є соціальний поділ «правильні/неправильні», «успішні/невдахи», «сильні/слабкі». Ваше питання руйнує цей поділ.</p>
+  </div>
+
+  <!-- Завдання -->
+  <div class="section">
+    <div class="section-label"><span class="icon">🎯</span> Ваше завдання</div>
+    <div class="task-block">
+      <p>Знайдіть у своїй темі поділ «ми/вони» або «правильно/неправильно» — який насправді є умовним.</p>
+      <p>Напишіть заголовок-провокацію: «МИ ВСІ [щось несподіване]» або «[Поняття] — це не те що ви думаєте».</p>
+      <p>Дайте 2–3 паралельних приклади де суть однакова але форма різна. Потім — одне несподіване питання, яке перевертає рамку.</p>
+      <p>Фінал: не відповідь, а новий спосіб дивитись на тему.</p>
+      <div class="task-note">Перевірте: чи зупинились би ви самі на такому заголовку в стрічці? Якщо так — пост готовий.</div>
+    </div>
+  </div>
+
+  <!-- Промпт -->
+  <div class="section">
+    <div class="section-label"><span class="icon">🤖</span> Промпт для ШІ</div>
+    <p>Скопіюйте і вставте в ChatGPT або Claude. Заповніть дужки своїми даними:</p>
+
+    <div class="prompt-wrapper">
+      <div class="prompt-header">
+        <span class="prompt-header-label">Промпт</span>
+        <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Копіювати
+        </button>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text" id="promptText">Напиши пост у форматі "Несподіване питання" для [вкажи соціальну мережу].
+Я — [вкажи свою роль: коуч / психолог / консультант / підприємець].
+Моя аудиторія: [ хто ваші читачі - їх роль, що вони вже роблять і яка їхня головна проблема].
+Тема: [вкажи конкретну тему зі свого досвіду — наприклад: прокрастинація / вигорання / межі / продажі / страх провалу].
+Загальновідома «правда» про цю тему: [як більшість це розуміє — одним реченням].
+Моє несподіване питання яке перевертає рамку: [сформулюй питання яке змушує читача подивитись на тему інакше].
+
+Структура посту:
+— Заголовок-провокація: «МИ ВСІ [конкретна ситуація яку впізнають — не стан, а дія або вибір]» 
+— Підзаголовок у дужках: уточнення що робить провокацію ще гострішою
+— 2–3 паралельних приклади: «одні роблять [А], інші — [Б]» — кожен наступний приклад гостріший за попередній, суть та сама
+— Несподіване питання в окремому абзаці — виділити, зробити паузою
+— 3–4 уточнюючих питання що розгортають тему
+— Нова рамка: 1–2 речення що дають новий спосіб дивитись на тему
+— Заклик до дії: конкретне запитання до аудиторії яке запускає коментарі — не просто "збережіть"
+
+Тон: провокативний але без осуду, з повагою до читача. Без кліше: не використовуй фрази "пишу від душі", "для корпорацій", "інтуїтивно відчуваю", "справжній успіх", "магія маркетингу".
+Не починай пост зі слова «Я». Якщо перше слово "Я" — далі має іти інтрига або конфлікт, а не представлення себе.</pre>
+      </div>
+    </div>
+    <div class="copy-toast" id="copyToast">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Скопійовано в буфер обміну
+    </div>
+
+    <a href="https://radchenkoartem.github.io/post-analyzer//" target="_blank" class="trainer-link">
+      <div>
+        <div class="trainer-link-text">Тренажер для перевірки постів</div>
+        <div class="trainer-link-sub">Перевірте свій пост після написання</div>
+      </div>
+      <div class="trainer-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </div>
+    </a>
+  </div>
+
+  <div class="footer">
+    <span>Формули вірусних постів</span>
+    <span>Урок 2 з 12 · Блок: Охоплення</span>
+  </div>
+
+</div>
+
+<script>
+function copyPrompt() {
+  const text = document.getElementById('promptText').innerText;
+  const btn = document.getElementById('copyBtn');
+  const toast = document.getElementById('copyToast');
+
+  navigator.clipboard.writeText(text).then(() => {
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Скопійовано`;
+    btn.style.background = '#2d8a4e';
+    toast.classList.add('show');
+
+    setTimeout(() => {
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Копіювати`;
+      btn.style.background = '';
+      toast.classList.remove('show');
+    }, 2500);
+  });
+}
+</script>
+</body>
+</html>

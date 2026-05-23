@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 5 — Бути [професія]</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600&family=Geologica:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F2EB;
+    --surface: #FFFFFF;
+    --ink: #1A1814;
+    --ink2: #5A5650;
+    --ink3: #9A9590;
+    --accent: #C84B2F;
+    --accent2: #E8A030;
+    --border: #E0DBD2;
+    --prompt-bg: #1A1814;
+    --prompt-text: #F0EDE6;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Geologica', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .page { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+  .breadcrumb {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink3); margin-bottom: 2.5rem; display: flex; align-items: center; gap: 8px;
+  }
+  .breadcrumb span { color: var(--accent); }
+
+  .lesson-tag {
+    display: inline-block; background: var(--accent); color: #fff;
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; padding: 4px 12px; border-radius: 2px; margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'Unbounded', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 600; line-height: 1.2; letter-spacing: -0.02em;
+    color: var(--ink); margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 13px; color: var(--ink3); letter-spacing: 0.06em;
+    text-transform: uppercase; margin-bottom: 3rem;
+  }
+
+  .section { margin-bottom: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 1.25rem;
+  }
+  .section-label .icon { font-size: 16px; }
+
+  p { color: var(--ink2); margin-bottom: 0.75rem; font-size: 15px; }
+  p:last-child { margin-bottom: 0; }
+
+  .formula { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .formula-row { display: grid; grid-template-columns: 140px 1fr; border-bottom: 1px solid var(--border); }
+  .formula-row:last-child { border-bottom: none; }
+  .formula-key {
+    background: var(--bg); padding: 14px 16px;
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink3);
+    border-right: 1px solid var(--border); display: flex; align-items: flex-start; padding-top: 16px;
+  }
+  .formula-val { padding: 14px 16px; font-size: 14px; color: var(--ink2); line-height: 1.6; }
+
+  .example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; }
+  .example-note {
+    font-size: 11px; color: var(--accent); font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .example-text { font-size: 14px; color: var(--ink2); line-height: 1.75; }
+  .example-text p { font-size: 14px; font-style: italic; }
+  .example-block {
+    margin: 0.75rem 0;
+    padding: 0.75rem 1rem;
+    background: var(--bg);
+    border-left: 2px solid var(--border);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink2);
+  }
+  .example-block strong {
+    display: block;
+    font-style: normal;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+
+  .topics { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0.5rem; }
+  .topic-tag {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 6px 12px; font-size: 13px; color: var(--ink2);
+  }
+
+  .task-block {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem;
+  }
+  .task-block p { font-size: 14px; }
+  .task-note {
+    margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--ink3); font-style: italic;
+  }
+
+  .prompt-wrapper { background: var(--prompt-bg); border-radius: 10px; overflow: hidden; }
+  .prompt-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .prompt-header-label {
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4);
+  }
+  .copy-btn {
+    display: flex; align-items: center; gap: 7px; background: var(--accent);
+    color: #fff; border: none; border-radius: 5px; padding: 8px 16px;
+    font-family: 'Geologica', sans-serif; font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: background 0.15s, transform 0.1s;
+  }
+  .copy-btn:hover { background: #a83a20; }
+  .copy-btn:active { transform: scale(0.97); }
+  .copy-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .prompt-body { padding: 1.5rem 20px 1.75rem; }
+  .prompt-text {
+    font-family: 'Geologica', sans-serif; font-size: 14px; line-height: 1.8;
+    color: var(--prompt-text); white-space: pre-wrap; margin: 0;
+  }
+
+  .copy-toast {
+    display: none; align-items: center; gap: 6px;
+    font-size: 13px; color: #6fcf97; margin-top: 10px; padding-left: 4px;
+  }
+  .copy-toast.show { display: flex; }
+
+  .trainer-link {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.25rem 1.5rem; text-decoration: none; color: var(--ink);
+    transition: border-color 0.15s, box-shadow 0.15s; margin-top: 1.5rem;
+  }
+  .trainer-link:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(200,75,47,0.08); }
+  .trainer-link-text { font-size: 15px; font-weight: 500; }
+  .trainer-link-sub { font-size: 13px; color: var(--ink3); margin-top: 2px; }
+  .trainer-arrow {
+    width: 32px; height: 32px; background: var(--accent); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .trainer-arrow svg { width: 14px; height: 14px; color: #fff; }
+
+  .footer {
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--ink3); display: flex;
+    justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+
+  @media (max-width: 520px) {
+    .formula-row { grid-template-columns: 1fr; }
+    .formula-key { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  }
+
+    .main-link {
+    transition: all 0.15s;
+  }
+
+  .main-link a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .main-link:hover {
+    transform: scale(0.95);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="breadcrumb">
+    Формули вірусних постів <span>›</span> Блок: Впізнавання <span>›</span> Урок 5 з 12
+  </div>
+
+  <div class="lesson-tag">Урок 5 з 12</div>
+    <div class="lesson-tag main-link"><a href="./index.html"> Головна сторінка </a></div>
+    <div class="lesson-tag main-link"><a href="./urok-6.html"> Наступний урок </a></div>
+  <h1>Бути<br>[... ваша професія]</h1>
+  <div class="subtitle">Блок 2 — Впізнавання</div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">🕐</span> Коли використовувати</div>
+    <p>Коли хочете, щоб ваша аудиторія відчула, що хоче працювати з такою людиною. Ідеально підходить для експертів із чіткою професійною ідентичністю — коучів, психологів, консультантів, нутріціологів, дизайнерів, підприємців.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">⚙️</span> Як це працює</div>
+    <p>Ви описуєте реальність своєї професії через конкретні деталі. Читач створює в уяві не абстрактний образ, а картинку щоденного життя.</p>
+    <p>Механіка будується на контрасті: є «красива версія» професії, яку транслюють зовні — і є реальна, яку знають тільки свої. Пост говорить про реальну. Саме тому він резонує.</p>
+    <p>Фінал не для скарг — він називає силу. Важливо: пост має залишати відчуття, що ви відчуваєте гордість, а не виснаження.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">📐</span> Формула</div>
+    <div class="formula">
+      <div class="formula-row">
+        <div class="formula-key">Відкриття</div>
+        <div class="formula-val">Коротка ситуація або спостереження зі сторони — як «виглядає» ваша професія для інших. 1–3 речення.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Контраст</div>
+        <div class="formula-val">«А ось що це насправді» — перехід до реальності через 1 речення-місток.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Серія «Бути...»</div>
+        <div class="formula-val">4–7 блоків. Кожен — конкретна деталь з реального життя. Без пояснень, без висновків. Просто факт, який впізнає кожен.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Фінал</div>
+        <div class="formula-val">Одна фраза яка називає силу цих людей. Не «молодці», а щось точне і несподіване.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Заклик до дії</div>
+        <div class="formula-val">Опційно — запитання до аудиторії або м'який заклик поділитись.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">✍️</span> Приклад готового посту</div>
+    <div class="example-card">
+      <div class="example-note">⚠️ Тільки для ознайомлення — не копіювати</div>
+      <div class="example-text">
+        <p>Нещодавно читала яким має бути «ідеальний коуч».<br>Натхненний. Ресурсний. Завжди в балансі.<br>Тримає простір. Не засуджує. Повністю присутній.</p>
+        <p>Все правда. Тільки за лаштунками виглядає трохи інакше.</p>
+        <div class="example-block">
+          <strong>Бути коучем — це</strong>
+          провести три сесії підряд, повністю бути присутнім у іншому просторі, а потім вийти на кухню і п'ять хвилин просто дивитись у вікно.
+        </div>
+        <div class="example-block">
+          <strong>Бути коучем — це</strong>
+          чути «ви так легко все пояснюєте» і мовчки згадувати роки практики, супервізій і власної терапії за цим.
+        </div>
+        <div class="example-block">
+          <strong>Бути коучем — це</strong>
+          радіти прогресу клієнта більше, ніж він сам. І стримувати це, бо зараз не про тебе.
+        </div>
+        <div class="example-block">
+          <strong>Бути коучем — це</strong>
+          знати, що не можна «забрати» чужу проблему. І все одно думати про неї після сесії.
+        </div>
+        <div class="example-block">
+          <strong>Бути коучем — це</strong>
+          продавати результат, якого не можна гарантувати. Бо все залежить від людини навпроти. І вірити в неї навіть тоді, коли вона сама ще не вірить.
+        </div>
+        <p style="margin-top: 1rem;">Бути коучем — це обирати цю роботу знову і знову.<br>Не тому що легко.<br>А тому що коли щось зрушує з місця — це відчуття ні з чим не порівняти.</p>
+        <p>Якщо ви в цій професії — ви знаєте про що я.<br>Напишіть у коментарях: що для вас «бути [ваша професія]»? 👇</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">💡</span> Для яких професій працює</div>
+    <p>Підставте свою професію — і пост одразу стає вашим:</p>
+    <div class="topics">
+      <span class="topic-tag">Бути психологом — це...</span>
+      <span class="topic-tag">Бути нутріціологом — це...</span>
+      <span class="topic-tag">Бути підприємцем — це...</span>
+      <span class="topic-tag">Бути дизайнером — це...</span>
+      <span class="topic-tag">Бути HR-консультантом — це...</span>
+      <span class="topic-tag">Бути викладачем — це...</span>
+      <span class="topic-tag">Бути мамою і підприємцем одночасно — це...</span>
+      <span class="topic-tag">Бути фрілансером — це...</span>
+    </div>
+    <p style="margin-top: 1rem; font-size: 13px; color: var(--ink3); font-style: italic;">Головне — деталі мають бути реальними. Чим конкретніше, тим сильніше пост резонує читачам.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">🎯</span> Ваше завдання</div>
+    <div class="task-block">
+      <p>Напишіть 5–7 речень що починаються з «Бути [ваша професія] — це...»</p>
+      <p>Кожне речення — одна конкретна деталь з вашого реального життя. Не те, як має бути. А те, як є насправді.</p>
+      <p>На початку — коротка ситуація як «бачать вас зовні». В кінці — одна фраза про силу, яку це дає.</p>
+      <div class="task-note">Перевірте: чи впізнаєте ви себе в кожному рядку? Якщо так — пост готовий.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">🤖</span> Промпт для ШІ</div>
+    <p>Скопіюйте і вставте в ChatGPT або Claude. Заповніть дужки своїми даними:</p>
+
+    <div class="prompt-wrapper">
+      <div class="prompt-header">
+        <span class="prompt-header-label">Промпт</span>
+        <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Копіювати
+        </button>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text" id="promptText">Напиши пост у форматі "Бути [професія]" для [вкажіть соціальну мережу].
+Я — [ваша роль, наприклад: коуч / психолог / нутріціолог / підприємець].
+Моя аудиторія: [читачі (їх роль), яким ви хочете показати суть своєї роботи, яка лишається за лаштунками].
+
+Структура посту:
+— Відкриття: 2–3 речення про те, як виглядає ця професія зовні (красива версія)
+— Перехід: одне речення-місток до реальності
+— 5–7 блоків "Бути [професія] — це..." з конкретними живими деталями
+   Кожен блок: 1–3 речення, без пояснень, просто зрозумілий факт.
+— Посередині списку — одне речення-місток що розриває перелік і підсилює контраст перед фінальними пунктами.
+— Фінал: одна фраза яка називає силу цих людей. Не «молодці», а точно і несподівано
+— Запитання до аудиторії в кінці (опційно)
+
+Тон: щирий, без пафосу, з повагою до професії. Від першої особи.
+Деталі мають бути реальними і впізнаваними — не загальними словами.
+Не починай пост зі слова «Я». Якщо перше слово "Я" — далі має іти інтрига або конфлікт, а не представлення себе.</pre>
+      </div>
+    </div>
+    <div class="copy-toast" id="copyToast">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Скопійовано в буфер обміну
+    </div>
+
+    <a href="https://radchenkoartem.github.io/post-analyzer//" target="_blank" class="trainer-link">
+      <div>
+        <div class="trainer-link-text">Тренажер для перевірки постів</div>
+        <div class="trainer-link-sub">Перевірте свій пост після написання</div>
+      </div>
+      <div class="trainer-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </div>
+    </a>
+  </div>
+
+  <div class="footer">
+    <span>Формули вірусних постів</span>
+    <span>Урок 5 з 12 · Блок: Впізнавання</span>
+  </div>
+
+</div>
+
+<script>
+function copyPrompt() {
+  const text = document.getElementById('promptText').innerText;
+  const btn = document.getElementById('copyBtn');
+  const toast = document.getElementById('copyToast');
+  navigator.clipboard.writeText(text).then(() => {
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Скопійовано`;
+    btn.style.background = '#2d8a4e';
+    toast.classList.add('show');
+    setTimeout(() => {
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Копіювати`;
+      btn.style.background = '';
+      toast.classList.remove('show');
+    }, 2500);
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 3 — Моя позиція на гучну тему</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600&family=Geologica:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F2EB;
+    --surface: #FFFFFF;
+    --ink: #1A1814;
+    --ink2: #5A5650;
+    --ink3: #9A9590;
+    --accent: #C84B2F;
+    --accent2: #E8A030;
+    --border: #E0DBD2;
+    --prompt-bg: #1A1814;
+    --prompt-text: #F0EDE6;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Geologica', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .page { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+  .breadcrumb {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink3); margin-bottom: 2.5rem; display: flex; align-items: center; gap: 8px;
+  }
+  .breadcrumb span { color: var(--accent); }
+
+  .lesson-tag {
+    display: inline-block; background: var(--accent); color: #fff;
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; padding: 4px 12px; border-radius: 2px; margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'Unbounded', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 600; line-height: 1.2; letter-spacing: -0.02em;
+    color: var(--ink); margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 13px; color: var(--ink3); letter-spacing: 0.06em;
+    text-transform: uppercase; margin-bottom: 3rem;
+  }
+
+  .section { margin-bottom: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 1.25rem;
+  }
+  .section-label .icon { font-size: 16px; }
+
+  p { color: var(--ink2); margin-bottom: 0.75rem; font-size: 15px; }
+  p:last-child { margin-bottom: 0; }
+
+  .formula { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .formula-row { display: grid; grid-template-columns: 160px 1fr; border-bottom: 1px solid var(--border); }
+  .formula-row:last-child { border-bottom: none; }
+  .formula-key {
+    background: var(--bg); padding: 14px 16px;
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink3);
+    border-right: 1px solid var(--border); display: flex; align-items: flex-start; padding-top: 16px;
+  }
+  .formula-val { padding: 14px 16px; font-size: 14px; color: var(--ink2); line-height: 1.6; }
+
+  .example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; }
+  .example-note {
+    font-size: 11px; color: var(--accent); font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .example-text { font-size: 14px; color: var(--ink2); line-height: 1.75; font-style: italic; }
+  .example-text p { font-size: 14px; font-style: italic; }
+  .example-highlight {
+    margin: 1rem 0; padding: 0.75rem 1rem;
+    background: var(--bg); border-left: 2px solid var(--accent);
+    border-radius: 0 4px 4px 0; font-style: italic; font-size: 14px; color: var(--ink);
+  }
+
+  .tips-list { list-style: none; margin-top: 0.5rem; }
+  .tips-list li {
+    font-size: 14px; color: var(--ink2); padding: 8px 0;
+    border-bottom: 1px solid var(--border); display: flex; align-items: baseline; gap: 8px;
+  }
+  .tips-list li:last-child { border-bottom: none; }
+  .tips-list li::before { content: "—"; color: var(--ink3); flex-shrink: 0; }
+
+  .topics { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0.5rem; }
+  .topic-tag {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 6px 12px; font-size: 13px; color: var(--ink2);
+  }
+
+  .task-block {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem;
+  }
+  .task-block p { font-size: 14px; }
+  .task-note {
+    margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--ink3); font-style: italic;
+  }
+
+  .prompt-wrapper { background: var(--prompt-bg); border-radius: 10px; overflow: hidden; }
+  .prompt-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .prompt-header-label {
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4);
+  }
+  .copy-btn {
+    display: flex; align-items: center; gap: 7px; background: var(--accent);
+    color: #fff; border: none; border-radius: 5px; padding: 8px 16px;
+    font-family: 'Geologica', sans-serif; font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: background 0.15s, transform 0.1s;
+  }
+  .copy-btn:hover { background: #a83a20; }
+  .copy-btn:active { transform: scale(0.97); }
+  .copy-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .prompt-body { padding: 1.5rem 20px 1.75rem; }
+  .prompt-text {
+    font-family: 'Geologica', sans-serif; font-size: 14px; line-height: 1.8;
+    color: var(--prompt-text); white-space: pre-wrap; margin: 0;
+  }
+
+  .copy-toast {
+    display: none; align-items: center; gap: 6px;
+    font-size: 13px; color: #6fcf97; margin-top: 10px; padding-left: 4px;
+  }
+  .copy-toast.show { display: flex; }
+
+  .trainer-link {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.25rem 1.5rem; text-decoration: none; color: var(--ink);
+    transition: border-color 0.15s, box-shadow 0.15s; margin-top: 1.5rem;
+  }
+  .trainer-link:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(200,75,47,0.08); }
+  .trainer-link-text { font-size: 15px; font-weight: 500; }
+  .trainer-link-sub { font-size: 13px; color: var(--ink3); margin-top: 2px; }
+  .trainer-arrow {
+    width: 32px; height: 32px; background: var(--accent); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .trainer-arrow svg { width: 14px; height: 14px; color: #fff; }
+
+  .footer {
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--ink3); display: flex;
+    justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+
+  @media (max-width: 520px) {
+    .formula-row { grid-template-columns: 1fr; }
+    .formula-key { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  }
+
+    .main-link {
+    transition: all 0.15s;
+  }
+
+  .main-link a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .main-link:hover {
+    transform: scale(0.95);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="breadcrumb">
+    Формули вірусних постів <span>›</span> Блок: Охоплення <span>›</span> Урок 3 з 12
+  </div>
+
+  <div class="lesson-tag">Урок 3 з 12</div>
+    <div class="lesson-tag main-link"><a href="./index.html"> Головна сторінка </a></div>
+    <div class="lesson-tag main-link"><a href="./urok-4.html"> Наступний урок </a></div>
+  <h1>Моя позиція<br>на гучну тему</h1>
+  <div class="subtitle">Блок 1 — Охоплення</div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">🕐</span> Коли використовувати</div>
+    <p>Коли є гучна тема, яку всі обговорюють у вашій ніші або в суспільстві, і у вас є на неї чітка думка. Люди вже шукають цю тему в стрічці, вже налаштовані читати і реагувати. Ваше завдання — зайти в цю розмову зі своєю позицією раніше за інших.</p>
+    <p>Такі пости поширюють навіть ті, хто з вами не погоджується, бо хочуть висловити свою позицію. В будь-якому разі охоплення зростає.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">⚙️</span> Як це працює</div>
+    <p>Ви не просто «коментуєте тренд» — ви займаєте позицію. Різниця принципова. Наприклад, тисячі людей пишуть «ось що я думаю про ШІ». Але лише одиниці кажуть «я з цим не погоджуюсь, і ось мій аргумент». Саме другі отримують охоплення.</p>
+    <p>Структура проста: назвати тему → сказати що всі кажуть → сказати що думаєте ви і чому → дати конкретний аргумент зі свого досвіду → запитати думку читача.</p>
+    <p>Головне правило: ваша позиція має бути справжньою. Штучна провокація тільки щоб зібрати коментарі зчитується одразу і відштовхне. А справжня незгода або несподівана згода завжди резонує.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">📐</span> Формула</div>
+    <div class="formula">
+      <div class="formula-row">
+        <div class="formula-key">Назва теми</div>
+        <div class="formula-val">Назвіть гучний інфопривід або тему яку всі обговорюють. 1 речення, без вступів.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Що кажуть всі</div>
+        <div class="formula-val">«Більшість каже що...» або «Зараз прийнято вважати що...» — 1–2 речення. Справедливо і без осуду.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Ваша позиція</div>
+        <div class="formula-val">«Я думаю інакше» або «Я погоджуюсь, але з одним але». Чітко і від першої особи.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Аргумент з досвіду</div>
+        <div class="formula-val">Конкретний приклад або спостереження зі своєї практики яке підтверджує вашу позицію. Не теорія, а саме факт.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Висновок</div>
+        <div class="formula-val">Що це означає для вашої аудиторії, до чого їм варто прислухатись.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Питання</div>
+        <div class="formula-val">Запитайте думку читача — відкрито, без маніпуляції. Це запускає коментарі.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">✍️</span> Приклад готового посту</div>
+    <div class="example-card">
+      <div class="example-note">⚠️ Тільки для ознайомлення — не копіювати</div>
+      <div class="example-text">
+        <p><strong style="font-style:normal; color: var(--ink);">ШІ замінить експертів, так кажуть скрізь.</strong></p>
+        <p>ChatGPT напише текст. Згенерує стратегію. Проведе аналіз.<br>Навіщо платити коучу, консультанту, психологу — якщо є безкоштовний інструмент що відповідає за секунду?</p>
+        <div class="example-highlight">Я думаю інакше. І ось чому.</div>
+        <p>За останній рік я спостерігаю одну і ту саму картину.<br>Люди приходять з «готовими відповідями» від ШІ.<br>Стратегія є. Контент-план є. Навіть скрипт продажів є.<br>Але нічого не працює.</p>
+        <p>Бо ШІ дає правильні слова, але не розуміє контексту, бо ви йому його не сказали.<br>Він не знає що ви боїтесь підняти ціну, бо колись вам відмовили.<br>Він не відчуває що ваш «ідеальний клієнт» описаний неправильно.<br>Він не бачить що стратегія блискуча — але ви її не впровадите, бо вона не ваша за цінностями.</p>
+        <p>ШІ — це інструмент, потужний і корисний.<br>Але інструмент не замінює людину, яка знає що з ним робити і навіщо.<br>Так само як калькулятор не замінив математиків.<br>А Google не замінив лікарів.</p>
+        <p>Експерти які бояться ШІ — бояться не того.<br>Треба боятися залишатись експертом, що дає послугу на рівні інформації.<br>Бо саме інформацію ШІ дає безкоштовно.<br>А трансформація, контекст і супровід — це все ще про людину.</p>
+        <p>А як ви ставитесь до ШІ у своїй роботі?<br>Інструмент, загроза чи можливість? 👇</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">💡</span> Як знайти свій інфопривід</div>
+    <p>Гучні теми є завжди — треба лише знати де дивитись:</p>
+    <ul class="tips-list">
+      <li>Що зараз обговорюють у вашій ніші в соцмережах і на конференціях?</li>
+      <li>Яка новина або тренд викликає суперечки серед колег?</li>
+      <li>Яку пораду або ідею ви чуєте скрізь — і з якою не погоджуєтесь?</li>
+      <li>Що змінилось у вашій темі за останній рік — і як ви до цього ставитесь?</li>
+      <li>Яке питання клієнти ставлять найчастіше саме зараз?</li>
+    </ul>
+    <p style="margin-top: 1rem; font-size: 13px; color: var(--ink3); font-style: italic;">Підказка: не чекайте «ідеального» інфоприводу. Гарячі теми живуть 3–7 днів. Якщо є думка — пишіть одразу.</p>
+
+    <p style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Теми які завжди гарячі для аудиторії експертів:</p>
+    <div class="topics">
+      <span class="topic-tag">ШІ і майбутнє експертних професій</span>
+      <span class="topic-tag">Чи варто знижувати ціну в кризу</span>
+      <span class="topic-tag">Особистий бренд vs анонімність</span>
+      <span class="topic-tag">Робота в найм vs власний бізнес</span>
+      <span class="topic-tag">Чи потрібен диплом щоб називатись експертом</span>
+      <span class="topic-tag">Соцмережі — інструмент чи пастка для продуктивності</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">🎯</span> Ваше завдання</div>
+    <div class="task-block">
+      <p>Знайдіть тему яка зараз активно обговорюється у вашій ніші або серед вашої аудиторії.</p>
+      <p>Сформулюйте свою позицію в одному реченні — до того як почнете писати пост. Якщо позиції немає — шукайте іншу тему.</p>
+      <p>Напишіть пост за формулою: назвати тему → що кажуть всі → ваша думка → аргумент з досвіду → питання до аудиторії.</p>
+      <div class="task-note">Перевірте: чи є у вас реальна думка на цю тему — чи ви просто «заходите в тренд»? Читач відчуває різницю. Справжня позиція завжди сильніша за кон'юнктурну.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">🤖</span> Промпт для ШІ</div>
+    <p>Скопіюйте і вставте в ChatGPT або Claude. Заповніть дужки своїми даними:</p>
+
+    <div class="prompt-wrapper">
+      <div class="prompt-header">
+        <span class="prompt-header-label">Промпт</span>
+        <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Копіювати
+        </button>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text" id="promptText">Напиши пост у форматі "Моя позиція на гучну тему" для [вкажіть соціальну мережу].
+Я — [ваша роль, наприклад: коуч / психолог / маркетолог / підприємець].
+Моя аудиторія: [ хто ваші читачі - їх роль, що вони вже роблять і яка їхня головна проблема].
+Гучна тема або інфопривід: [назвіть тему яка зараз обговорюється].
+Що кажуть більшість: [опишіть поширену думку].
+Моя позиція: [ваша думка — погоджуєтесь, не погоджуєтесь, або погоджуєтесь але з нюансом].
+Мій аргумент з досвіду: [конкретний приклад або спостереження з практики].
+
+Структура посту:
+— Відкриття: назвати тему одним реченням без вступів
+— Що кажуть всі: 1–2 речення, справедливо і без осуду
+— Моя позиція: чітко від першої особи — «Я думаю інакше» або «Я погоджуюсь — але»
+— Аргумент з досвіду: конкретний приклад, не теорія
+— Висновок: що це означає для аудиторії
+— Питання: відкрите запитання що запускає коментарі
+
+Тон: впевнений, з позицією, без агресії. Від першої особи.
+Не починай пост зі слова «Я». Якщо перше слово "Я" — далі має іти інтрига або конфлікт, а не представлення себе.</pre>
+      </div>
+    </div>
+    <div class="copy-toast" id="copyToast">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Скопійовано в буфер обміну
+    </div>
+
+    <a href="https://radchenkoartem.github.io/post-analyzer//" target="_blank" class="trainer-link">
+      <div>
+        <div class="trainer-link-text">Тренажер для перевірки постів</div>
+        <div class="trainer-link-sub">Перевірте свій пост після написання</div>
+      </div>
+      <div class="trainer-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </div>
+    </a>
+  </div>
+
+  <div class="footer">
+    <span>Формули вірусних постів</span>
+    <span>Урок 3 з 12 · Блок: Охоплення</span>
+  </div>
+
+</div>
+
+<script>
+function copyPrompt() {
+  const text = document.getElementById('promptText').innerText;
+  const btn = document.getElementById('copyBtn');
+  const toast = document.getElementById('copyToast');
+  navigator.clipboard.writeText(text).then(() => {
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Скопійовано`;
+    btn.style.background = '#2d8a4e';
+    toast.classList.add('show');
+    setTimeout(() => {
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Копіювати`;
+      btn.style.background = '';
+      toast.classList.remove('show');
+    }, 2500);
+  });
+}
+</script>
+</body>
+</html>

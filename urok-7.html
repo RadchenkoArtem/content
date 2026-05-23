@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 7 — Переосмислення поняття</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600&family=Geologica:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F2EB;
+    --surface: #FFFFFF;
+    --ink: #1A1814;
+    --ink2: #5A5650;
+    --ink3: #9A9590;
+    --accent: #C84B2F;
+    --accent2: #E8A030;
+    --border: #E0DBD2;
+    --prompt-bg: #1A1814;
+    --prompt-text: #F0EDE6;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Geologica', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .page { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+  .breadcrumb {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink3); margin-bottom: 2.5rem; display: flex; align-items: center; gap: 8px;
+  }
+  .breadcrumb span { color: var(--accent); }
+
+  .lesson-tag {
+    display: inline-block; background: var(--accent); color: #fff;
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; padding: 4px 12px; border-radius: 2px; margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'Unbounded', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 600; line-height: 1.2; letter-spacing: -0.02em;
+    color: var(--ink); margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 13px; color: var(--ink3); letter-spacing: 0.06em;
+    text-transform: uppercase; margin-bottom: 3rem;
+  }
+
+  .section { margin-bottom: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 1.25rem;
+  }
+  .section-label .icon { font-size: 16px; }
+
+  p { color: var(--ink2); margin-bottom: 0.75rem; font-size: 15px; }
+  p:last-child { margin-bottom: 0; }
+
+  .formula { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .formula-row { display: grid; grid-template-columns: 160px 1fr; border-bottom: 1px solid var(--border); }
+  .formula-row:last-child { border-bottom: none; }
+  .formula-key {
+    background: var(--bg); padding: 14px 16px;
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink3);
+    border-right: 1px solid var(--border); display: flex; align-items: flex-start; padding-top: 16px;
+  }
+  .formula-val { padding: 14px 16px; font-size: 14px; color: var(--ink2); line-height: 1.6; }
+
+  /* Reframe visual */
+  .reframe-visual {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; margin-bottom: 1.25rem;
+    display: flex; align-items: stretch;
+  }
+  .reframe-old {
+    flex: 1; padding: 1.25rem;
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+  }
+  .reframe-new {
+    flex: 1; padding: 1.25rem;
+  }
+  .reframe-label {
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3);
+    margin-bottom: 6px;
+  }
+  .reframe-label.new { color: var(--accent); }
+  .reframe-text {
+    font-size: 15px; font-weight: 500; color: var(--ink);
+    line-height: 1.4;
+  }
+  .reframe-sub { font-size: 13px; color: var(--ink3); margin-top: 4px; }
+
+  .example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; }
+  .example-note {
+    font-size: 11px; color: var(--accent); font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .example-text { font-size: 14px; color: var(--ink2); line-height: 1.75; }
+  .example-text p { font-size: 14px; font-style: italic; }
+  .example-series {
+    margin: 0.75rem 0; list-style: none;
+    background: var(--bg); border-radius: 6px; padding: 0.75rem 1rem;
+  }
+  .example-series li {
+    font-size: 14px; color: var(--ink2); font-style: italic;
+    padding: 4px 0;
+  }
+  .example-punchline {
+    margin-top: 1rem; padding: 0.75rem 1rem;
+    background: var(--ink); border-radius: 6px;
+    font-size: 14px; color: #F0EDE6; font-style: italic; font-weight: 500;
+  }
+
+  .topics { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0.5rem; }
+  .topic-tag {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 6px 12px; font-size: 13px; color: var(--ink2);
+  }
+
+  .task-block {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem;
+  }
+  .task-block p { font-size: 14px; }
+  .task-note {
+    margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--ink3); font-style: italic;
+  }
+
+  .prompt-wrapper { background: var(--prompt-bg); border-radius: 10px; overflow: hidden; }
+  .prompt-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .prompt-header-label {
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4);
+  }
+  .copy-btn {
+    display: flex; align-items: center; gap: 7px; background: var(--accent);
+    color: #fff; border: none; border-radius: 5px; padding: 8px 16px;
+    font-family: 'Geologica', sans-serif; font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: background 0.15s, transform 0.1s;
+  }
+  .copy-btn:hover { background: #a83a20; }
+  .copy-btn:active { transform: scale(0.97); }
+  .copy-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .prompt-body { padding: 1.5rem 20px 1.75rem; }
+  .prompt-text {
+    font-family: 'Geologica', sans-serif; font-size: 14px; line-height: 1.8;
+    color: var(--prompt-text); white-space: pre-wrap; margin: 0;
+  }
+
+  .copy-toast {
+    display: none; align-items: center; gap: 6px;
+    font-size: 13px; color: #6fcf97; margin-top: 10px; padding-left: 4px;
+  }
+  .copy-toast.show { display: flex; }
+
+  .trainer-link {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.25rem 1.5rem; text-decoration: none; color: var(--ink);
+    transition: border-color 0.15s, box-shadow 0.15s; margin-top: 1.5rem;
+  }
+  .trainer-link:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(200,75,47,0.08); }
+  .trainer-link-text { font-size: 15px; font-weight: 500; }
+  .trainer-link-sub { font-size: 13px; color: var(--ink3); margin-top: 2px; }
+  .trainer-arrow {
+    width: 32px; height: 32px; background: var(--accent); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .trainer-arrow svg { width: 14px; height: 14px; color: #fff; }
+
+  .footer {
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--ink3); display: flex;
+    justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+
+  @media (max-width: 520px) {
+    .formula-row { grid-template-columns: 1fr; }
+    .formula-key { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    .reframe-visual { flex-direction: column; }
+    .reframe-old { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+
+    .main-link {
+    transition: all 0.15s;
+  }
+
+  .main-link a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .main-link:hover {
+    transform: scale(0.95);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="breadcrumb">
+    Формули вірусних постів <span>›</span> Блок: Довіра <span>›</span> Урок 7 з 12
+  </div>
+
+  <div class="lesson-tag">Урок 7 з 12</div>
+    <div class="lesson-tag main-link"><a href="./index.html"> Головна сторінка </a></div>
+    <div class="lesson-tag main-link"><a href="./urok-8.html"> Наступний урок </a></div>
+  <h1>Переосмислення<br>поняття</h1>
+  <div class="subtitle">Блок 3 — Довіра</div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">🕐</span> Коли використовувати</div>
+    <p>Коли хочете показати глибину мислення і заявити свою позицію. Цей формат працює, коли у вас є власний погляд на поняття яке всі начеб-то «знають», але насправді розуміють поверхово або неправильно.</p>
+    <p>Ідеально підходить, якщо ви хочете відбудуватися від конкурентів не через дипломи та регалії, а через мислення. Читач після такого посту думає: «ця людина бачить глибше, дійсно розуміється на своїй темі».</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">⚙️</span> Як це працює</div>
+    <p>Ви берете слово або поняття яке всі знають і мають про нього чітку (але спрощену) думку. Заголовок одразу руйнує цей стереотип: «[Поняття] — це не [звичне уявлення]. Це [нове визначення]».</p>
+    <p>Далі — коротке спостереження з реального життя яке підтверджує: звичне уявлення не працює. Потім ви будуєте нове визначення через конкретні прояви: «це вибір», «це рішення», «це коли...».</p>
+    <p>Фінал замикає коло — повертається до заголовку і дає читачеві нове розуміння для цього поняття. Після цього посту він вже не зможе думати про нього по-старому. Саме це будує довіру до автора як до людини з позицією.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">📐</span> Формула</div>
+    <div class="reframe-visual">
+      <div class="reframe-old">
+        <div class="reframe-label">Звичне уявлення</div>
+        <div class="reframe-text">«[Поняття] — це [те що всі думають]»</div>
+        <div class="reframe-sub">Знайоме, але поверхове</div>
+      </div>
+      <div class="reframe-new">
+        <div class="reframe-label new">Ваше визначення</div>
+        <div class="reframe-text">«[Поняття] — це [дія / вибір / рішення]»</div>
+        <div class="reframe-sub">Глибше, через поведінку</div>
+      </div>
+    </div>
+    <div class="formula">
+      <div class="formula-row">
+        <div class="formula-key">Заголовок</div>
+        <div class="formula-val">[ПОНЯТТЯ] — це не [звичне уявлення]. Це [ваше визначення].</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Руйнування стереотипу</div>
+        <div class="formula-val">1–3 речення: спостереження або ситуація яка показує що звичне уявлення не працює. Конкретно, без абстракцій.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Нове визначення</div>
+        <div class="formula-val">Серія «це [дія / вибір / рішення]...» — 4–7 коротких рядків. Кожен — один конкретний прояв поняття через поведінку.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Поглиблення</div>
+        <div class="formula-val">1–2 речення чому це важливо або чому це дратує / лякає / надихає інших.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Замикання</div>
+        <div class="formula-val">Повернення до заголовку. Одна фраза яка підсумовує і запам'ятовується.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">CTA</div>
+        <div class="formula-val">Запитання до аудиторії або «поставте +, якщо відгукнулось».</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">✍️</span> Приклад готового посту</div>
+    <div class="example-card">
+      <div class="example-note">⚠️ Тільки для ознайомлення — не копіювати</div>
+      <div class="example-text">
+        <p><strong style="font-style:normal; color: var(--ink);">ЕКСПЕРТНІСТЬ — ЦЕ НЕ СЕРТИФІКАТ ЧИ ДИПЛОМ, ЦЕ РІШЕННЯ.</strong></p>
+        <p>Колись нам дуже вдало продали ідею, що експертність живе в дипломах.<br>Мовляв, отримаєш ще один сертифікат — і тебе нарешті сприйматимуть серйозно.<br>Спойлер: ні.</p>
+        <p>Я бачила людей з десятками регалій, які не могли чітко пояснити що вони роблять і для кого.<br>І бачила людей без жодного диплому, біля яких клієнти вишиковувались у чергу.</p>
+        <p>Бо експертність — це не папірець, це вибір.</p>
+        <ul class="example-series">
+          <li>Вибір говорити про складне просто.</li>
+          <li>Вибір мати позицію, навіть коли це незручно.</li>
+          <li>Вибір не підлаштовуватись під кожного клієнта, а знати свого.</li>
+          <li>Вибір назвати ціну без вибачень.</li>
+          <li>Вибір відмовити, якщо розумієш що не твоє.</li>
+        </ul>
+        <p>Справжній експерт не питає дозволу вважатись експертом.<br>Він просто вирішує діяти як експерт — і робить це щодня.</p>
+        <p>Саме тому справжня експертність іноді дратує.<br>Бо вона про внутрішню впевненість, а не про «пройду ще один курс і тоді точно почну продавати».</p>
+        <p>І так, знання потрібні. Але без рішення всередині — це просто інформація на полиці.</p>
+        <div class="example-punchline">Експертність починається з фрази: «Я вже знаю достатньо, щоб допомагати».</div>
+        <p style="margin-top: 1rem;">Поставте +, якщо відгукнулось.<br>І напишіть: що для вас означає «відчути себе експертом»? 👇</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">💡</span> Варіанти понять для переосмислення</div>
+    <p>Підставте поняття з вашої теми — і механіка одразу стає вашою:</p>
+    <div class="topics">
+      <span class="topic-tag">Довіра — це не посмішка. Це послідовність.</span>
+      <span class="topic-tag">Результат — це не цифра. Це рішення яке ви прийняли раніше.</span>
+      <span class="topic-tag">Межі — це не стіна. Це повага до себе і до інших.</span>
+      <span class="topic-tag">Ціна — це не вартість годин. Це вартість рішення.</span>
+      <span class="topic-tag">Відпочинок — це не нагорода. Це інструмент.</span>
+      <span class="topic-tag">Особистий бренд — це не фото. Це позиція.</span>
+      <span class="topic-tag">Провал — це не кінець. Це дані.</span>
+      <span class="topic-tag">Мотивація — це не відчуття. Це система.</span>
+    </div>
+    <p style="margin-top: 1rem; font-size: 13px; color: var(--ink3); font-style: italic;">Порада: найсильніші пости цього формату народжуються з понять, які вас самих колись вразили або трансформували.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">🎯</span> Ваше завдання</div>
+    <div class="task-block">
+      <p>Пригадайте поняття у вашій темі яке більшість розуміє поверхово або неправильно.</p>
+      <p>Напишіть заголовок за формулою: «[ПОНЯТТЯ] — це не [звичне уявлення]. Це [ваше визначення]».</p>
+      <p>Далі — 4–6 рядків «це [дія або вибір]...» які розкривають ваше визначення через конкретну поведінку.</p>
+      <div class="task-note">Перевірте: чи є у вас реальна позиція по цьому поняттю, чи це просто красиві слова? Якщо є — пост вийде сильним і запам'ятається.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">🤖</span> Промпт для ШІ</div>
+    <p>Скопіюйте і вставте в ChatGPT або Claude. Заповніть дужки своїми даними:</p>
+
+    <div class="prompt-wrapper">
+      <div class="prompt-header">
+        <span class="prompt-header-label">Промпт</span>
+        <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Копіювати
+        </button>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text" id="promptText">Напиши пост у форматі "Переосмислення поняття" для [вкажіть соціальну мережу].
+Я — [ваша роль, наприклад: коуч / маркетолог / психолог / підприємець].
+Поняття яке хочу переосмислити: [наприклад: довіра / результат / експертність / межі].
+Звичне уявлення про це поняття: [як більшість його розуміє].
+Моє визначення: [як розумієте його ви — через дію, рішення або поведінку].
+
+Структура посту:
+— Заголовок: "[ПОНЯТТЯ] — це не [звичне уявлення]. Це [нове визначення]."
+— 2–3 речення: спостереження яке показує що звичне уявлення не працює
+— Серія "це [дія / вибір / рішення]..." — 5–6 коротких рядків, кожен з нового рядка
+— 1–2 речення чому це важливо або чому дратує / надихає
+— Замикання: одна фраза яка повертає до заголовку
+— Заклик до дії: запитання до аудиторії або «поставте +, якщо відгукнулось»
+
+Тон: впевнений, з позицією, без повчань. Від першої особи.
+Не починай пост зі слова «Я». Якщо перше слово "Я" — далі має іти інтрига або конфлікт, а не представлення себе.</pre>
+      </div>
+    </div>
+    <div class="copy-toast" id="copyToast">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Скопійовано в буфер обміну
+    </div>
+
+    <a href="https://radchenkoartem.github.io/post-analyzer//" target="_blank" class="trainer-link">
+      <div>
+        <div class="trainer-link-text">Тренажер для перевірки постів</div>
+        <div class="trainer-link-sub">Перевірте свій пост після написання</div>
+      </div>
+      <div class="trainer-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </div>
+    </a>
+  </div>
+
+  <div class="footer">
+    <span>Формули вірусних постів</span>
+    <span>Урок 7 з 12 · Блок: Довіра</span>
+  </div>
+
+</div>
+
+<script>
+function copyPrompt() {
+  const text = document.getElementById('promptText').innerText;
+  const btn = document.getElementById('copyBtn');
+  const toast = document.getElementById('copyToast');
+  navigator.clipboard.writeText(text).then(() => {
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Скопійовано`;
+    btn.style.background = '#2d8a4e';
+    toast.classList.add('show');
+    setTimeout(() => {
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Копіювати`;
+      btn.style.background = '';
+      toast.classList.remove('show');
+    }, 2500);
+  });
+}
+</script>
+</body>
+</html>

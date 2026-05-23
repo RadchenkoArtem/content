@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 1 — Розвінчання міфів</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600&family=Geologica:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F2EB;
+    --surface: #FFFFFF;
+    --ink: #1A1814;
+    --ink2: #5A5650;
+    --ink3: #9A9590;
+    --accent: #C84B2F;
+    --accent2: #E8A030;
+    --border: #E0DBD2;
+    --prompt-bg: #1A1814;
+    --prompt-text: #F0EDE6;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Geologica', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  /* Header */
+  .breadcrumb {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .breadcrumb span { color: var(--accent); }
+
+  .main-page-link:hover { transform: scale(0.95); }
+
+  .lesson-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 4px 12px;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--ink3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 1.25rem;
+  }
+  .section-label .icon { font-size: 16px; }
+
+  h2 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+  }
+
+  p { color: var(--ink2); margin-bottom: 0.75rem; font-size: 15px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* Formula block */
+  .formula {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .formula-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .formula-row:last-child { border-bottom: none; }
+  .formula-key {
+    background: var(--bg);
+    padding: 14px 16px;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    padding-top: 16px;
+  }
+  .formula-val {
+    padding: 14px 16px;
+    font-size: 14px;
+    color: var(--ink2);
+    line-height: 1.6;
+  }
+
+  /* Example block */
+  .example-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    position: relative;
+  }
+  .example-note {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .example-text {
+    font-size: 14px;
+    color: var(--ink2);
+    line-height: 1.75;
+    font-style: italic;
+  }
+  .example-text p { font-size: 14px; font-style: italic; }
+  .example-point {
+    margin-top: 1rem;
+    padding-left: 1rem;
+    border-left: 2px solid var(--border);
+  }
+  .example-point strong {
+    display: block;
+    font-style: normal;
+    font-weight: 500;
+    color: var(--ink);
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  /* Topics list */
+  .topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 0.5rem;
+  }
+  .topic-tag {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: var(--ink2);
+  }
+
+  /* Task block */
+  .task-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 8px 8px 0;
+    padding: 1.25rem 1.5rem;
+  }
+  .task-block p { font-size: 14px; }
+  .task-note {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--ink3);
+    font-style: italic;
+  }
+
+  /* Prompt block */
+  .prompt-wrapper {
+    background: var(--prompt-bg);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .prompt-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .prompt-header-label {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+  .copy-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    font-family: 'Geologica', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .copy-btn:hover { background: #a83a20; }
+  .copy-btn:active { transform: scale(0.97); }
+  .copy-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .prompt-body {
+    padding: 1.5rem 20px 1.75rem;
+  }
+  .prompt-text {
+    font-family: 'Geologica', sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--prompt-text);
+    white-space: pre-wrap;
+    margin: 0;
+  }
+
+  .copy-toast {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #6fcf97;
+    margin-top: 10px;
+    padding-left: 4px;
+  }
+  .copy-toast.show { display: flex; }
+
+  /* Trainer link */
+  .trainer-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    text-decoration: none;
+    color: var(--ink);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    margin-top: 1.5rem;
+  }
+  .trainer-link:hover {
+    border-color: var(--accent);
+    box-shadow: 0 2px 12px rgba(200,75,47,0.08);
+  }
+  .trainer-link-text { font-size: 15px; font-weight: 500; }
+  .trainer-link-sub { font-size: 13px; color: var(--ink3); margin-top: 2px; }
+  .trainer-arrow {
+    width: 32px; height: 32px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .trainer-arrow svg { width: 14px; height: 14px; color: #fff; }
+
+  /* Footer */
+  .footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--ink3);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 520px) {
+    .formula-row { grid-template-columns: 1fr; }
+    .formula-key { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  }
+
+  .main-link {
+    transition: all 0.15s;
+  }
+
+  .main-link a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .main-link:hover {
+    transform: scale(0.95);
+  }
+
+
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="breadcrumb">
+    Формули вірусних постів <span>›</span> Блок: Охоплення <span>›</span> Урок 1 з 12
+  </div>
+  
+  <div class="lesson-tag">Урок 1 з 12</div>
+  <div class="lesson-tag main-link"><a href="./index.html"> Головна сторінка </a></div>
+  <div class="lesson-tag main-link"><a href="./urok-2.html"> Наступний урок </a></div>
+
+  <h1>Розвінчання<br>міфів</h1>
+  <div class="subtitle">Блок 1 — Охоплення</div>
+
+  <!-- Коли використовувати -->
+  <div class="section">
+    <div class="section-label"><span class="icon">🕐</span> Коли використовувати</div>
+    <p>Коли хочете вийти на нову аудиторію і одразу заявити позицію. Цей формат зупиняє скрол навіть у тих, хто вас не знає, бо провокує реакцію: «стривайте, а це ж правда» або «ні, я не згоден». В обох випадках людина читає до кінця і поширює.</p>
+    <p>Найсильніший старт для нового акаунту або після паузи в контенті.</p>
+  </div>
+
+  <!-- Як це працює -->
+  <div class="section">
+    <div class="section-label"><span class="icon">⚙️</span> Як це працює</div>
+    <p>Ви берете 3–5 популярних тез у вашій темі — тих, що всі повторюють і мало хто оспорює. І розбиваєте кожну конкретним аргументом: «так кажуть» → «але ось що насправді».</p>
+    <p>Формула тримається на протиріччі. Читач або захищає звичне («ні, це ж правда!») або киває («саме так, мене це теж дратувало»). Фінал не залишає в підвішеному стані — він дає позицію автора і показує альтернативу.</p>
+    <p>Такі пости коментують, зберігають і поширюють зі словами «ось дивіться, я ж казав».</p>
+  </div>
+
+  <!-- Формула -->
+  <div class="section">
+    <div class="section-label"><span class="icon">📐</span> Формула</div>
+    <div class="formula">
+      <div class="formula-row">
+        <div class="formula-key">Заголовок</div>
+        <div class="formula-val">N порад/ідей/правил, які [добре звучать / всі повторюють / здаються очевидними] — але [не працюють / шкодять / вводять в оману]</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Вступ</div>
+        <div class="formula-val">1–2 речення: чому ці поради живуть, хоча не працюють. Без агресії, просто факт.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Список міфів</div>
+        <div class="formula-val">Кожен міф = підзаголовок (сама порада в лапках) + 2–4 речення розвінчання. Конкретно, без загальних слів.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Фінал</div>
+        <div class="formula-val">Ваша позиція — що ви пропонуєте замість цього. Одна-дві фрази, що дають альтернативу і показують вашу експертизу.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Заклик до дії</div>
+        <div class="formula-val">М'який, без «купіть» — просто «про це я і пишу» або «якщо впізнали себе».</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Приклад -->
+  <div class="section">
+    <div class="section-label"><span class="icon">✍️</span> Приклад готового посту</div>
+    <div class="example-card">
+      <div class="example-note">⚠️ Тільки для ознайомлення — не копіювати</div>
+      <div class="example-text">
+        <p><strong style="font-style:normal; color: var(--ink);">5 порад, які добре звучать на конференціях, але не працюють у реальному житті.</strong></p>
+        <p>Є фрази, які всі повторюють. Їх легко лайкати, зручно цитувати. Проблема в одному: у реальності вони часто не дають результату.</p>
+        <p>Назву речі своїми іменами.</p>
+        <div class="example-point">
+          <strong>1. «Просто почніть — решта прийде сама»</strong>
+          <p>Без розуміння куди і навіщо, старт дає лише втому. Дії без системи накопичуються, але не рухають вперед.</p>
+        </div>
+        <div class="example-point">
+          <strong>2. «Будьте собою — і все вийде»</strong>
+          <p>Бути собою потрібно. Але якщо «себе» ніхто не розуміє — це невдала стратегія. Автентичність без ясності не конвертується в результат.</p>
+        </div>
+        <div class="example-point">
+          <strong>3. «Головне — наполегливість»</strong>
+          <p>Наполегливість у неправильному напрямку — це просто шлях не туди. Спочатку треба обрати правильний напрямок, а потім виявити наполегливість.</p>
+        </div>
+        <div class="example-point">
+          <strong>4. «Не бійтеся помилок»</strong>
+          <p>Помилки — це нормально і неминуче. Але є різниця між помилкою з рефлексією і помилкою по колу. Без аналізу це не досвід, це звичка.</p>
+        </div>
+        <div class="example-point">
+          <strong>5. «Вірте в себе»</strong>
+          <p>Віра в себе не замінює навичок, системи і зворотного зв'язку. Впевненість без компетентності — ризик, а не перевага.</p>
+        </div>
+        <p style="margin-top: 1rem;">Гарні слова не замінюють ясного мислення. Саме тому я пишу про конкретні інструменти, без магічного мислення і красивих кліше.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Теми -->
+  <div class="section">
+    <div class="section-label"><span class="icon">💡</span> Варіанти тем для вашої ніші</div>
+    <p>Та сама формула може вам знадобитися, щоб розкрити різні теми. Ось з чого можна відштовхнутись:</p>
+    <div class="topics">
+      <span class="topic-tag">Поради про продуктивність / тайм-менеджмент</span>
+      <span class="topic-tag">Міфи про побудову команди або делегування</span>
+      <span class="topic-tag">Популярні ідеї про нетворкінг і зв'язки</span>
+      <span class="topic-tag">Кліше про «пасивний дохід» або «роботу мрії»</span>
+      <span class="topic-tag">Загальні поради щодо навчання і розвитку</span>
+      <span class="topic-tag">Те що кажуть про соцмережі і особистий бренд</span>
+      <span class="topic-tag">Стереотипи у вашій конкретній ніші</span>
+    </div>
+  </div>
+
+  <!-- Завдання -->
+  <div class="section">
+    <div class="section-label"><span class="icon">🎯</span> Ваше завдання</div>
+    <div class="task-block">
+      <p>Пригадайте 3–5 фраз або порад у вашій темі, які ви чуєте постійно, і з якими ви не згодні.</p>
+      <p>Для кожної напишіть: що не так насправді. Одне-два речення, конкретно і від себе.</p>
+      <p>Фінал: ваша позиція — що ви пропонуєте замість цього.</p>
+      <div class="task-note">Перевірте: чи є у вас реальна думка по кожному пункту, а не просто «це не так»? Якщо є аргумент — пост вийде сильним.</div>
+    </div>
+  </div>
+
+  <!-- Промпт -->
+  <div class="section">
+    <div class="section-label"><span class="icon">🤖</span> Промпт для ШІ</div>
+    <p>Скопіюйте і вставте в ChatGPT або Claude. Заповніть дужки своїми даними:</p>
+
+    <div class="prompt-wrapper">
+      <div class="prompt-header">
+        <span class="prompt-header-label">Промпт</span>
+        <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Копіювати
+        </button>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text" id="promptText">Напиши пост у форматі "Розвінчання міфів" для [соціальна мережа].
+Я — [ваша роль, наприклад: коуч / HR-консультант / маркетолог]. 
+Моя тема: [наприклад: управління командою / особисті фінанси / розвиток блогу]. 
+Моя аудиторія: [ хто ваші читачі - їх роль, що вони вже роблять і яка їхня головна проблема]
+Структура посту: 
+- Заголовок: «N порад про [тема], які здаються правильними — і саме тому шкодять» (гостро, як виклик) 
+- Вступ: 1 речення яке називає конкретний біль — що відбувається з тими хто вірить цим порадам. Не констатація а удар по проблемі 
+- 4–5 пунктів: кожен = популярна порада в лапках + конкретний аргумент чому не працює + 1 питання або деталь з реального досвіду яка це підтверджує 
+- Фінал: моя позиція — не «що замість» загально, а одна конкретна альтернативна дія або підхід
+- Заклик до дії: що конкретно отримає читач якщо підпишеться або напише — одна чітка обіцянка, не «про це я пишу».
+Тон: впевнений, з викликом, без агресії. Конкретні аргументи, без загальних слів і заїжджених фраз типу «давати цінність», «бути щирим», «показувати за лаштунками». Не починай пост зі слова «Я». Якщо перше слово "Я", далі має іти інтрига або конфлікт, а не представлення себе.
+Не використовуй кліше: «звучить логічно», «описує бажаний результат», «людям подобається чесність».</pre>
+      </div>
+    </div>
+    <div class="copy-toast" id="copyToast">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Скопійовано в буфер обміну
+    </div>
+
+    <a href="https://radchenkoartem.github.io/post-analyzer/" target="_blank" class="trainer-link">
+      <div>
+        <div class="trainer-link-text">Тренажер для перевірки постів</div>
+        <div class="trainer-link-sub">Перевірте свій пост після написання</div>
+      </div>
+      <div class="trainer-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </div>
+    </a>
+  </div>
+
+  <div class="footer">
+    <span>Формули вірусних постів</span>
+    <span>Урок 1 з 12 · Блок: Охоплення</span>
+  </div>
+
+</div>
+
+<script>
+function copyPrompt() {
+  const text = document.getElementById('promptText').innerText;
+  const btn = document.getElementById('copyBtn');
+  const toast = document.getElementById('copyToast');
+
+  navigator.clipboard.writeText(text).then(() => {
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Скопійовано`;
+    btn.style.background = '#2d8a4e';
+    toast.classList.add('show');
+
+    setTimeout(() => {
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Копіювати`;
+      btn.style.background = '';
+      toast.classList.remove('show');
+    }, 2500);
+  });
+}
+</script>
+</body>
+</html>

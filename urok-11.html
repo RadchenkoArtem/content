@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 11 — Що, якби…</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600&family=Geologica:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F2EB;
+    --surface: #FFFFFF;
+    --ink: #1A1814;
+    --ink2: #5A5650;
+    --ink3: #9A9590;
+    --accent: #C84B2F;
+    --accent2: #E8A030;
+    --border: #E0DBD2;
+    --prompt-bg: #1A1814;
+    --prompt-text: #F0EDE6;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Geologica', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .page { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+  .breadcrumb {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink3); margin-bottom: 2.5rem; display: flex; align-items: center; gap: 8px;
+  }
+  .breadcrumb span { color: var(--accent); }
+
+  .lesson-tag {
+    display: inline-block; background: var(--accent); color: #fff;
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; padding: 4px 12px; border-radius: 2px; margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'Unbounded', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 600; line-height: 1.2; letter-spacing: -0.02em;
+    color: var(--ink); margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 13px; color: var(--ink3); letter-spacing: 0.06em;
+    text-transform: uppercase; margin-bottom: 3rem;
+  }
+
+  .section { margin-bottom: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 1.25rem;
+  }
+  .section-label .icon { font-size: 16px; }
+
+  p { color: var(--ink2); margin-bottom: 0.75rem; font-size: 15px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* "What if" question visual */
+  .whatif-visual {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.5rem; margin-bottom: 1.25rem;
+    text-align: center;
+  }
+  .whatif-label {
+    font-size: 10px; font-family: 'Unbounded', sans-serif; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 0.75rem;
+  }
+  .whatif-question {
+    font-size: 20px; font-weight: 600; color: var(--ink); line-height: 1.3;
+    font-family: 'Unbounded', sans-serif;
+  }
+  .whatif-question em { color: var(--accent); font-style: normal; }
+  .whatif-sub { font-size: 13px; color: var(--ink3); margin-top: 0.5rem; }
+
+  .formula { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .formula-row { display: grid; grid-template-columns: 150px 1fr; border-bottom: 1px solid var(--border); }
+  .formula-row:last-child { border-bottom: none; }
+  .formula-key {
+    background: var(--bg); padding: 14px 16px;
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink3);
+    border-right: 1px solid var(--border); display: flex; align-items: flex-start; padding-top: 16px;
+  }
+  .formula-val { padding: 14px 16px; font-size: 14px; color: var(--ink2); line-height: 1.6; }
+
+  .example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; }
+  .example-note {
+    font-size: 11px; color: var(--accent); font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .example-text { font-size: 14px; color: var(--ink2); line-height: 1.75; }
+  .example-text p { font-size: 14px; font-style: italic; }
+  .example-whatif {
+    margin: 0.75rem 0; padding: 1rem 1.25rem;
+    background: var(--bg); border-radius: 6px;
+    border-left: 3px solid var(--accent);
+    font-size: 15px; color: var(--ink); font-weight: 500; font-style: italic;
+  }
+  .example-math {
+    margin: 0.75rem 0; padding: 0.75rem 1rem;
+    background: var(--ink); border-radius: 6px;
+    font-size: 14px; color: #F0EDE6; font-style: italic; line-height: 1.8;
+  }
+  .example-math .highlight { color: var(--accent2); font-weight: 600; }
+  .example-reason {
+    margin: 0.75rem 0; padding: 0.75rem 1rem;
+    background: var(--bg); border-left: 2px solid var(--border);
+    border-radius: 0 4px 4px 0; font-style: italic; font-size: 14px; color: var(--ink2);
+  }
+
+  .topics { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0.5rem; }
+  .topic-tag {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 6px 12px; font-size: 13px; color: var(--ink2);
+  }
+
+  .task-block {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem;
+  }
+  .task-block p { font-size: 14px; }
+  .task-note {
+    margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--ink3); font-style: italic;
+  }
+
+  .prompt-wrapper { background: var(--prompt-bg); border-radius: 10px; overflow: hidden; }
+  .prompt-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .prompt-header-label {
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4);
+  }
+  .copy-btn {
+    display: flex; align-items: center; gap: 7px; background: var(--accent);
+    color: #fff; border: none; border-radius: 5px; padding: 8px 16px;
+    font-family: 'Geologica', sans-serif; font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: background 0.15s, transform 0.1s;
+  }
+  .copy-btn:hover { background: #a83a20; }
+  .copy-btn:active { transform: scale(0.97); }
+  .copy-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .prompt-body { padding: 1.5rem 20px 1.75rem; }
+  .prompt-text {
+    font-family: 'Geologica', sans-serif; font-size: 14px; line-height: 1.8;
+    color: var(--prompt-text); white-space: pre-wrap; margin: 0;
+  }
+
+  .copy-toast {
+    display: none; align-items: center; gap: 6px;
+    font-size: 13px; color: #6fcf97; margin-top: 10px; padding-left: 4px;
+  }
+  .copy-toast.show { display: flex; }
+
+  .trainer-link {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.25rem 1.5rem; text-decoration: none; color: var(--ink);
+    transition: border-color 0.15s, box-shadow 0.15s; margin-top: 1.5rem;
+  }
+  .trainer-link:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(200,75,47,0.08); }
+  .trainer-link-text { font-size: 15px; font-weight: 500; }
+  .trainer-link-sub { font-size: 13px; color: var(--ink3); margin-top: 2px; }
+  .trainer-arrow {
+    width: 32px; height: 32px; background: var(--accent); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .trainer-arrow svg { width: 14px; height: 14px; color: #fff; }
+
+  .footer {
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--ink3); display: flex;
+    justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+
+  @media (max-width: 520px) {
+    .formula-row { grid-template-columns: 1fr; }
+    .formula-key { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  }
+
+    .main-link {
+    transition: all 0.15s;
+  }
+
+  .main-link a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .main-link:hover {
+    transform: scale(0.95);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="breadcrumb">
+    Формули вірусних постів <span>›</span> Блок: Дія <span>›</span> Урок 11 з 12
+  </div>
+
+  <div class="lesson-tag">Урок 11 з 12</div>
+    <div class="lesson-tag main-link"><a href="./index.html"> Головна сторінка </a></div>
+    <div class="lesson-tag main-link"><a href="./urok-12.html"> Наступний урок </a></div>
+  <h1>Що,<br>якби…</h1>
+  <div class="subtitle">Блок 4 — Дія</div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">🕐</span> Коли використовувати</div>
+    <p>Коли ваша аудиторія вже щось робить, але без результату. Вони не бояться діяти. Вони розчаровані, що дії не дають того, на що очікували. Ця механіка показує не що буде якщо почати, а що вже втрачається, поки немає системи.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">⚙️</span> Як це працює</div>
+    <p>Ви ставите одне просте питання: «А що якби...» — і перевертаєте звичну картину. Не «уявіть як буде добре», а «подивіться, що вже відбувається без цього».</p>
+    <p>Читач робить простий розрахунок у голові, і сам приходить до висновків. Ви нічого не продаєте — ви просто показуєте картину, що переконує.</p>
+    <p>Фінал не тисне, а запрошує. Людина, яка провела в голові підрахунки втрат — готова діяти.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">📐</span> Формула</div>
+    <div class="whatif-visual">
+      <div class="whatif-label">Ключовий прийом</div>
+      <div class="whatif-question">А що, <em>якби…</em></div>
+      <div class="whatif-sub">Одне питання — і читач сам робить розрахунок у голові</div>
+    </div>
+    <div class="formula">
+      <div class="formula-row">
+        <div class="formula-key">Відкриття</div>
+        <div class="formula-val">Конкретна ситуація яку впізнає ваша аудиторія, 2–3 речення.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Питання «що якби»</div>
+        <div class="formula-val">Одне питання яке запускає розрахунок у голові читача. Виділити окремо. «А що якби кожен ваш пост приводив хоча б одного нового підписника на тиждень?»</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Розрахунок</div>
+        <div class="formula-val">Проста математика що показує масштаб втраченого. Не абстрактно — конкретні цифри або конкретні приклади.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Причина</div>
+        <div class="formula-val">Чому так відбувається. Не осуд, а факт. «Не тому що немає таланту. А тому що немає структури».</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Запрошення</div>
+        <div class="formula-val">М'який заклик до наступного кроку. Не «купіть» — «якщо хочете змінити цю ситуацію — ось що можна зробити».</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">✍️</span> Приклад готового посту</div>
+    <div class="example-card">
+      <div class="example-note">⚠️ Тільки для ознайомлення — не копіювати</div>
+      <div class="example-text">
+        <p>Ви пишете. Регулярно, ну або майже регулярно.<br>Але клієнти не приходять з контенту.<br>Або приходять рідко і не ті.</p>
+        <div class="example-whatif">А що, якби один пост на тиждень приводив хоча б одного нового підписника, який через місяць стає клієнтом?</div>
+        <div class="example-math">
+          52 пости на рік.<br>
+          Якщо навіть кожен десятий підписник конвертується — це <span class="highlight">5 нових клієнтів на рік</span> тільки з контенту.<br>
+          При середньому чеку від одного клієнта 500$ — це <span class="highlight">2500$</span> які вже могли бути у вас.
+        </div>
+        <p>Але їх немає. Бо пости є, а структури немає.</p>
+        <div class="example-reason">
+          Не тому що ви погано пишете.<br>
+          Не тому що ваша тема нікому не цікава.<br>
+          А тому що без правильного входу в тему, без точного розвороту думки — навіть хороший текст просто губиться у стрічці.
+        </div>
+        <p>Контент без структури — це зусилля без результату.<br>Контент зі структурою — це система, яка працює навіть коли ви відпочиваєте.</p>
+        <p>Якщо хочете змінити цю математику — завтра буде остання структура з 12. І вона саме про те як зробити наступний крок. 👇</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">💡</span> Варіанти питань «Що якби» для вашої ніші</div>
+    <p>Підставте свою тему — і запустіть розрахунок у голові читача:</p>
+    <div class="topics">
+      <span class="topic-tag">«А що якби кожна ваша консультація закінчувалась продовженням роботи?»</span>
+      <span class="topic-tag">«А що якби ви підняли ціну на 20% — і нічого не змінилось у попиті?»</span>
+      <span class="topic-tag">«А що якби половина ваших підписників знала що саме ви робите і для кого?»</span>
+      <span class="topic-tag">«А що якби один системний пост на тиждень замінив всі хаотичні?»</span>
+      <span class="topic-tag">«А що якби клієнти приходили вже прогрітими — і не питали про ціну?»</span>
+      <span class="topic-tag">«А що якби кожен конфлікт з партнером завершувався повним порозумінням?»</span>
+    </div>
+    <p style="margin-top: 1rem; font-size: 13px; color: var(--ink3); font-style: italic;">Підказка: найсильніше питання «що якби» — те де читач може порахувати відповідь сам. Конкретні цифри або конкретна ситуація завжди сильніші за абстракцію.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">🎯</span> Ваше завдання</div>
+    <div class="task-block">
+      <p>Знайдіть у своїй темі одну ситуацію де клієнт вже щось робить — але без системи і без результату.</p>
+      <p>Сформулюйте питання «А що якби...» яке запускає конкретний розрахунок.</p>
+      <p>Напишіть просту математику або конкретний приклад що показує масштаб втраченого.</p>
+      <p>Фінал — м'яке запрошення до наступного кроку. Без тиску, без «купіть».</p>
+      <div class="task-note">Перевірте: чи порахували ви самі щось у голові поки писали? Якщо так — пост працює.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">🤖</span> Промпт для ШІ</div>
+    <p>Скопіюйте і вставте в ChatGPT або Claude. Заповніть дужки своїми даними:</p>
+
+    <div class="prompt-wrapper">
+      <div class="prompt-header">
+        <span class="prompt-header-label">Промпт</span>
+        <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Копіювати
+        </button>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text" id="promptText">Напиши пост у форматі "Що якби" для [вкажіть соціальну мережу].
+Я — [ваша роль, наприклад: маркетолог / коуч / консультант / підприємець].
+Моя аудиторія: [вкажи хто твої читачі — конкретно: їх роль, що вони вже роблять і яка їхня головна проблема. Наприклад: експерти які вже продають свою експертизу але хочуть більше клієнтів через контент]
+
+Ситуація яку вони знають: [вкажи що вони вже роблять але без результату — конкретна дія].
+Моє питання «що якби»: [сформулюй питання яке змушує читача уявити інший результат].
+Приклад або спостереження: [вкажи конкретну ситуацію з практики — цифри або випадок, який показує масштаб втраченого].
+Інсайд: [вкажи факт або закономірність яку ти бачиш постійно, але більшість про неї не знає].
+Причина чому так відбувається: [не осуд, а факт].
+Наступний крок: [що можна зробити — м'яко, без тиску].
+
+Структура посту:
+— Відкриття: впізнавана ситуація, 2–3 речення
+— Питання «А що якби...» — окремим абзацем, виділено
+— Приклад з практики: конкретна ситуація що показує масштаб втраченого
+— Інсайд: факт який мало хто знає
+— Причина: чому так відбувається, без осуду
+— Запрошення: м'який заклик до наступного кроку
+
+Тон: спокійний, без тиску, з повагою. Читач сам робить висновок.
+Не починай пост зі слова «Я». Якщо перше слово "Я" — далі має іти інтрига або конфлікт, а не представлення себе.</pre>
+      </div>
+    </div>
+    <div class="copy-toast" id="copyToast">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Скопійовано в буфер обміну
+    </div>
+
+    <a href="https://radchenkoartem.github.io/post-analyzer//" target="_blank" class="trainer-link">
+      <div>
+        <div class="trainer-link-text">Тренажер для перевірки постів</div>
+        <div class="trainer-link-sub">Перевірте свій пост після написання</div>
+      </div>
+      <div class="trainer-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </div>
+    </a>
+  </div>
+
+  <div class="footer">
+    <span>Формули вірусних постів</span>
+    <span>Урок 11 з 12 · Блок: Дія</span>
+  </div>
+
+</div>
+
+<script>
+function copyPrompt() {
+  const text = document.getElementById('promptText').innerText;
+  const btn = document.getElementById('copyBtn');
+  const toast = document.getElementById('copyToast');
+  navigator.clipboard.writeText(text).then(() => {
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Скопійовано`;
+    btn.style.background = '#2d8a4e';
+    toast.classList.add('show');
+    setTimeout(() => {
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Копіювати`;
+      btn.style.background = '';
+      toast.classList.remove('show');
+    }, 2500);
+  });
+}
+</script>
+</body>
+</html>

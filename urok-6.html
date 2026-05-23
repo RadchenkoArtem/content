@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 6 — Різниця між А і Б</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600&family=Geologica:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F2EB;
+    --surface: #FFFFFF;
+    --ink: #1A1814;
+    --ink2: #5A5650;
+    --ink3: #9A9590;
+    --accent: #C84B2F;
+    --accent2: #E8A030;
+    --border: #E0DBD2;
+    --prompt-bg: #1A1814;
+    --prompt-text: #F0EDE6;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Geologica', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .page { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+  .breadcrumb {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink3); margin-bottom: 2.5rem; display: flex; align-items: center; gap: 8px;
+  }
+  .breadcrumb span { color: var(--accent); }
+
+  .lesson-tag {
+    display: inline-block; background: var(--accent); color: #fff;
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; padding: 4px 12px; border-radius: 2px; margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'Unbounded', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 600; line-height: 1.2; letter-spacing: -0.02em;
+    color: var(--ink); margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 13px; color: var(--ink3); letter-spacing: 0.06em;
+    text-transform: uppercase; margin-bottom: 3rem;
+  }
+
+  .section { margin-bottom: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 1.25rem;
+  }
+  .section-label .icon { font-size: 16px; }
+
+  p { color: var(--ink2); margin-bottom: 0.75rem; font-size: 15px; }
+  p:last-child { margin-bottom: 0; }
+
+  .formula { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .formula-row { display: grid; grid-template-columns: 150px 1fr; border-bottom: 1px solid var(--border); }
+  .formula-row:last-child { border-bottom: none; }
+  .formula-key {
+    background: var(--bg); padding: 14px 16px;
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink3);
+    border-right: 1px solid var(--border); display: flex; align-items: flex-start; padding-top: 16px;
+  }
+  .formula-val { padding: 14px 16px; font-size: 14px; color: var(--ink2); line-height: 1.6; }
+
+  /* А vs Б візуал */
+  .ab-visual {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+  }
+  .ab-side {
+    padding: 1.25rem;
+  }
+  .ab-side.a { background: var(--bg); }
+  .ab-side.b { background: var(--surface); }
+  .ab-label {
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3);
+    margin-bottom: 6px;
+  }
+  .ab-label.b-label { color: var(--accent); }
+  .ab-word { font-size: 18px; font-weight: 500; color: var(--ink); }
+  .ab-desc { font-size: 13px; color: var(--ink3); margin-top: 4px; line-height: 1.5; }
+  .ab-divider {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 12px; font-family: 'Unbounded', sans-serif;
+    font-size: 11px; color: var(--ink3); background: var(--surface);
+    border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+  }
+
+  .example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; }
+  .example-note {
+    font-size: 11px; color: var(--accent); font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .example-text { font-size: 14px; color: var(--ink2); line-height: 1.75; }
+  .example-text p { font-size: 14px; font-style: italic; }
+  .example-quote {
+    margin: 0.75rem 0; padding: 0.75rem 1rem;
+    background: var(--bg); border-left: 2px solid var(--accent);
+    border-radius: 0 4px 4px 0; font-size: 14px; color: var(--ink);
+    font-weight: 500; font-style: normal;
+  }
+  .example-parallels {
+    margin: 0.75rem 0; list-style: none;
+  }
+  .example-parallels li {
+    font-size: 14px; color: var(--ink2); font-style: italic;
+    padding: 5px 0; border-bottom: 1px solid var(--border);
+    display: flex; gap: 8px; align-items: baseline;
+  }
+  .example-parallels li:last-child { border-bottom: none; }
+  .example-parallels li::before { content: "→"; color: var(--ink3); flex-shrink: 0; }
+
+  .topics { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0.5rem; }
+  .topic-tag {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 6px 12px; font-size: 13px; color: var(--ink2);
+  }
+
+  .task-block {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem;
+  }
+  .task-block p { font-size: 14px; }
+  .task-note {
+    margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--ink3); font-style: italic;
+  }
+
+  .prompt-wrapper { background: var(--prompt-bg); border-radius: 10px; overflow: hidden; }
+  .prompt-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .prompt-header-label {
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4);
+  }
+  .copy-btn {
+    display: flex; align-items: center; gap: 7px; background: var(--accent);
+    color: #fff; border: none; border-radius: 5px; padding: 8px 16px;
+    font-family: 'Geologica', sans-serif; font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: background 0.15s, transform 0.1s;
+  }
+  .copy-btn:hover { background: #a83a20; }
+  .copy-btn:active { transform: scale(0.97); }
+  .copy-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .prompt-body { padding: 1.5rem 20px 1.75rem; }
+  .prompt-text {
+    font-family: 'Geologica', sans-serif; font-size: 14px; line-height: 1.8;
+    color: var(--prompt-text); white-space: pre-wrap; margin: 0;
+  }
+
+  .copy-toast {
+    display: none; align-items: center; gap: 6px;
+    font-size: 13px; color: #6fcf97; margin-top: 10px; padding-left: 4px;
+  }
+  .copy-toast.show { display: flex; }
+
+  .trainer-link {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.25rem 1.5rem; text-decoration: none; color: var(--ink);
+    transition: border-color 0.15s, box-shadow 0.15s; margin-top: 1.5rem;
+  }
+  .trainer-link:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(200,75,47,0.08); }
+  .trainer-link-text { font-size: 15px; font-weight: 500; }
+  .trainer-link-sub { font-size: 13px; color: var(--ink3); margin-top: 2px; }
+  .trainer-arrow {
+    width: 32px; height: 32px; background: var(--accent); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .trainer-arrow svg { width: 14px; height: 14px; color: #fff; }
+
+  .footer {
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--ink3); display: flex;
+    justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+
+  @media (max-width: 520px) {
+    .formula-row { grid-template-columns: 1fr; }
+    .formula-key { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    .ab-visual { grid-template-columns: 1fr; }
+    .ab-divider { border: none; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 8px; }
+  }
+
+    .main-link {
+    transition: all 0.15s;
+  }
+
+  .main-link a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .main-link:hover {
+    transform: scale(0.95);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="breadcrumb">
+    Формули вірусних постів <span>›</span> Блок: Впізнавання <span>›</span> Урок 6 з 12
+  </div>
+
+  <div class="lesson-tag">Урок 6 з 12</div>
+    <div class="lesson-tag main-link"><a href="./index.html"> Головна сторінка </a></div>
+    <div class="lesson-tag main-link"><a href="./urok-7.html"> Наступний урок </a></div>
+  <h1>Різниця<br>між А і Б</h1>
+  <div class="subtitle">Блок 2 — Впізнавання</div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">🕐</span> Коли використовувати</div>
+    <p>Коли у вашій темі є два поняття які люди плутають або вважають однаковими, але між ними прірва. І саме в цій прірві живе біль вашої аудиторії.</p>
+    <p>Цей формат ідеально працює як прогрів перед продажем: читач впізнає себе в «А» — і розуміє що йому потрібне «Б». Але без тиску і без реклами, просто через впізнавання.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">⚙️</span> Як це працює</div>
+    <p>Заголовок одразу називає обидва поняття і між ними — пауза. Читач зупиняється, бо інтуїтивно відчуває що різниця є, але не може її сформулювати.</p>
+    <p>Далі ви описуєте момент «А» — знайомий і навіть приємний. Читач впізнає себе і розслабляється. А потім — звичайна життєва ситуація де «А» не спрацьовує. І ось тут народжується «чому я знову не змогла/не зміг» — біль який всі знають, але мало хто назвав.</p>
+    <p>Серія паралелей «можна знати… і все одно не могти…» — кожна б'є точно в ціль. Фінал дає пояснення і нову точку зору.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">📐</span> Формула</div>
+    <div class="ab-visual">
+      <div class="ab-side a">
+        <div class="ab-label">А — знайоме</div>
+        <div class="ab-word">«Знаю»</div>
+        <div class="ab-desc">Приємний, знайомий стан. Читач впізнає себе.</div>
+      </div>
+      <div class="ab-divider">≠</div>
+      <div class="ab-side b">
+        <div class="ab-label b-label">Б — бажане</div>
+        <div class="ab-word">«Роблю»</div>
+        <div class="ab-desc">Те чого клієнт хоче, але не може досягти через А.</div>
+      </div>
+    </div>
+    <div class="formula">
+      <div class="formula-row">
+        <div class="formula-key">Заголовок</div>
+        <div class="formula-val">Різниця між «[А]» і «[Б]» — два слова і між ними прірва.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Момент «А»</div>
+        <div class="formula-val">Опис знайомого і приємного стану А. Читач впізнає себе. 2–3 речення.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Злам</div>
+        <div class="formula-val">Звичайна ситуація де А не допомагає. «І тут виявляється що...» — читач впізнає свій біль.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Пояснення різниці</div>
+        <div class="formula-val">1–2 речення що чітко розділяють А і Б. Формулювання яке можна процитувати.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Серія паралелей</div>
+        <div class="formula-val">3–4 рядки: «Можна [А] — і все одно [не мати Б]». Кожен рядок — окремий впізнаваний приклад.</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Нова рамка</div>
+        <div class="formula-val">Чому так відбувається. Без осуду, просто факт. «Це не про слабкість. Це про...»</div>
+      </div>
+      <div class="formula-row">
+        <div class="formula-key">Фінал + CTA</div>
+        <div class="formula-val">Одне речення що підсумовує. Перехід до продукту або запитання до аудиторії.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">✍️</span> Приклад готового посту</div>
+    <div class="example-card">
+      <div class="example-note">⚠️ Тільки для ознайомлення — не копіювати</div>
+      <div class="example-text">
+        <p><strong style="font-style:normal; color: var(--ink);">Різниця між «знаю» і «роблю».</strong></p>
+        <p>Багато хто каже: «Я все знаю».<br>Знаю, як делегувати. Знаю, що треба відпочивати.<br>Знаю, що не варто брати все на себе.</p>
+        <p>В цей момент справді стає легше.<br>З'являється відчуття ясності і навіть невелика гордість за себе.</p>
+        <p>А потім трапляється звичайна робоча ситуація.<br>Той самий дедлайн. Та сама команда. Той самий тиск.<br>І виявляється, що знання не змінює поведінку.</p>
+        <p>«Я ж все розумію — чому я знову взяв все це на себе?»</p>
+        <div class="example-quote">Різниця в тому, що «знаю» живе в голові, а РОБЛЮ — в щоденних рішеннях.<br>Усвідомлення відбувається на рівні мислення. Зміна — на рівні звички.</div>
+        <ul class="example-parallels">
+          <li>Можна логічно знати, що треба делегувати — і все одно не довіряти команді.</li>
+          <li>Можна розуміти цінність відпочинку — і все одно працювати у вихідні.</li>
+          <li>Можна бачити, що ви перевантажені — і все одно говорити «так» на новий проєкт.</li>
+          <li>Можна знати свою ціну — і все одно погоджуватись на менше.</li>
+        </ul>
+        <p>«Знаю» означає побачити зв'язок.<br>«Роблю» означає витримувати дискомфорт у момент вибору.<br>І пам'ятати, що нова поведінка потребує нової системи, а не просто нового розуміння.</p>
+        <p>Це не про слабкість.<br>Це про те, що знання і дія — це різне.</p>
+        <p>А у вас є щось, що ви знаєте, але ніяк не почнете робити? 👇</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">💡</span> Варіанти пар «А і Б» для вашої ніші</div>
+    <p>Знайдіть у своїй темі два поняття де між ними живе біль клієнта:</p>
+    <div class="topics">
+      <span class="topic-tag">«хочу» і «вирішив(ла)»</span>
+      <span class="topic-tag">«розумію» і «відчуваю»</span>
+      <span class="topic-tag">«намагаюсь» і «роблю»</span>
+      <span class="topic-tag">«знаю свою цінність» і «називаю свою ціну»</span>
+      <span class="topic-tag">«погодився(лась)» і «вибрав(ла)»</span>
+      <span class="topic-tag">«зайнятий(а)» і «продуктивний(а)»</span>
+      <span class="topic-tag">«мотивація» і «система»</span>
+      <span class="topic-tag">«змінився(лась)» і «виріс(ла)»</span>
+    </div>
+    <p style="margin-top: 1rem; font-size: 13px; color: var(--ink3); font-style: italic;">Підказка: найсильніша пара — та де «А» звучить позитивно і знайомо, а «Б» — це те чого клієнт насправді хоче але не може досягти через «А».</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">🎯</span> Ваше завдання</div>
+    <div class="task-block">
+      <p>Оберіть пару «А і Б» з вашої теми або придумайте свою.</p>
+      <p>Напишіть заголовок: «Різниця між [А] і [Б]».</p>
+      <p>Опишіть момент «А» — знайомий і приємний. Потім — ситуацію де А не спрацьовує. Потім — серію паралелей «можна знати А і все одно не мати Б».</p>
+      <p>Фінал: пояснення без осуду і перехід до вашого продукту або підходу.</p>
+      <div class="task-note">Перевірте: чи відчули ви самі цю різницю в якийсь момент? Якщо так — пост вийде живим.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label"><span class="icon">🤖</span> Промпт для ШІ</div>
+    <p>Скопіюйте і вставте в ChatGPT або Claude. Заповніть дужки своїми даними:</p>
+
+    <div class="prompt-wrapper">
+      <div class="prompt-header">
+        <span class="prompt-header-label">Промпт</span>
+        <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Копіювати
+        </button>
+      </div>
+      <div class="prompt-body">
+        <pre class="prompt-text" id="promptText">Напиши пост у форматі "Різниця між А і Б" для [вкажіть соціальну мережу].
+Я — [ваша роль, наприклад: коуч / психолог / бізнес-консультант].
+Моя аудиторія: [ хто ваші читачі - їх роль, що вони вже роблять і яка їхня головна проблема].
+Пара понять: А = «[перше поняття]», Б = «[друге поняття]».
+В чому різниця між ними: [поясніть своїми словами].
+Мій продукт або підхід: [опишіть коротко].
+
+Структура посту:
+— Заголовок: «Різниця між [А] і [Б]»
+— Момент А: знайомий і приємний стан, 2–3 речення
+— Злам: звичайна ситуація де А не допомагає — читач впізнає свій біль
+— Пояснення різниці: 1–2 речення які можна процитувати
+— 3–4 паралелі: «Можна [А] — і все одно [не мати Б]»
+— Нова рамка: чому так відбувається, без осуду
+— Фінал: одне речення що підсумовує + перехід до [назва продукту]
+— Заклик до дії: запитання до аудиторії або наступний крок до продукту.
+
+Тон: щирий, без повчань, з повагою до читача. Від першої особи.
+Не починай пост зі слова «Я». Якщо перше слово "Я" — далі має іти інтрига або конфлікт, а не представлення себе.</pre>
+      </div>
+    </div>
+    <div class="copy-toast" id="copyToast">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Скопійовано в буфер обміну
+    </div>
+
+    <a href="https://radchenkoartem.github.io/post-analyzer//" target="_blank" class="trainer-link">
+      <div>
+        <div class="trainer-link-text">Тренажер для перевірки постів</div>
+        <div class="trainer-link-sub">Перевірте свій пост після написання</div>
+      </div>
+      <div class="trainer-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </div>
+    </a>
+  </div>
+
+  <div class="footer">
+    <span>Формули вірусних постів</span>
+    <span>Урок 6 з 12 · Блок: Впізнавання</span>
+  </div>
+
+</div>
+
+<script>
+function copyPrompt() {
+  const text = document.getElementById('promptText').innerText;
+  const btn = document.getElementById('copyBtn');
+  const toast = document.getElementById('copyToast');
+  navigator.clipboard.writeText(text).then(() => {
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Скопійовано`;
+    btn.style.background = '#2d8a4e';
+    toast.classList.add('show');
+    setTimeout(() => {
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Копіювати`;
+      btn.style.background = '';
+      toast.classList.remove('show');
+    }, 2500);
+  });
+}
+</script>
+</body>
+</html>
