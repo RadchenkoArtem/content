@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Як працювати зі збіркою — Формули вірусних постів</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Geologica:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F2EB;
+    --surface: #FFFFFF;
+    --ink: #1A1814;
+    --ink2: #5A5650;
+    --ink3: #9A9590;
+    --accent: #C84B2F;
+    --accent2: #E8A030;
+    --border: #E0DBD2;
+    --prompt-bg: #1A1814;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Geologica', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .page { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+  .breadcrumb {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink3); margin-bottom: 2.5rem; display: flex; align-items: center; gap: 8px;
+  }
+  .breadcrumb span { color: var(--accent); }
+
+  .intro-tag {
+    display: inline-block; background: var(--accent2); color: var(--ink);
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; padding: 4px 12px; border-radius: 2px; margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-family: 'Unbounded', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700; line-height: 1.2; letter-spacing: -0.02em;
+    color: var(--ink); margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 13px; color: var(--ink3); letter-spacing: 0.06em;
+    text-transform: uppercase; margin-bottom: 3rem;
+  }
+
+  .section { margin-bottom: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); margin-bottom: 1.25rem;
+  }
+  .section-label .icon { font-size: 16px; }
+
+  p { color: var(--ink2); margin-bottom: 0.75rem; font-size: 15px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* Elements grid */
+  .elements-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.5rem;
+  }
+  .element-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.875rem 1rem;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .element-arrow {
+    color: var(--accent); font-size: 13px; flex-shrink: 0; margin-top: 2px;
+    font-weight: 600;
+  }
+  .element-text { font-size: 13px; color: var(--ink2); line-height: 1.5; }
+  .element-text strong { display: block; color: var(--ink); font-weight: 500; font-size: 13px; margin-bottom: 1px; }
+
+  /* Blocks */
+  .blocks-list { display: flex; flex-direction: column; gap: 8px; margin-top: 0.75rem; }
+  .block-item {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.875rem 1.25rem;
+  }
+  .block-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--ink); color: #fff;
+    font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .block-info { flex: 1; }
+  .block-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .block-days { font-size: 12px; color: var(--ink3); margin-top: 1px; }
+  .block-goal { font-size: 13px; color: var(--ink2); font-style: italic; }
+
+  /* Steps */
+  .steps { display: flex; flex-direction: column; gap: 12px; }
+  .step-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden;
+  }
+  .step-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 1rem 1.25rem; border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .step-num {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .step-title { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .step-body { padding: 1rem 1.25rem; }
+  .step-body p { font-size: 14px; margin-bottom: 0.5rem; }
+
+  /* A/B variants */
+  .variants { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 0.75rem; }
+  .variant {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1rem;
+  }
+  .variant-label {
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3);
+    margin-bottom: 0.75rem;
+  }
+  .variant-label.b { color: var(--accent); }
+  .variant-list { list-style: none; }
+  .variant-list li {
+    font-size: 13px; color: var(--ink2); padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex; gap: 8px; align-items: baseline;
+  }
+  .variant-list li:last-child { border-bottom: none; }
+  .variant-list li::before { content: "—"; color: var(--ink3); flex-shrink: 0; font-size: 11px; }
+
+  /* Tip card */
+  .tip-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2); border-radius: 0 8px 8px 0;
+    padding: 1rem 1.25rem; margin-top: 0.75rem;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+  .tip-text { font-size: 14px; color: var(--ink2); line-height: 1.6; }
+  .tip-text a { color: var(--accent); text-decoration: underline; }
+
+  /* Strategy steps */
+  .strategy-steps { display: flex; flex-direction: column; gap: 0; }
+  .strategy-step {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 1rem 0; border-bottom: 1px solid var(--border);
+  }
+  .strategy-step:last-child { border-bottom: none; }
+  .strategy-step-num {
+    font-family: 'Unbounded', sans-serif; font-size: 22px; font-weight: 700;
+    color: var(--border); flex-shrink: 0; line-height: 1; min-width: 32px;
+  }
+  .strategy-step-content { flex: 1; }
+  .strategy-step-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .strategy-step-text { font-size: 14px; color: var(--ink2); line-height: 1.6; }
+
+  .pin-tips { list-style: none; margin-top: 0.75rem; }
+  .pin-tips li {
+    font-size: 13px; color: var(--ink2); padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex; gap: 8px; align-items: baseline;
+  }
+  .pin-tips li:last-child { border-bottom: none; }
+  .pin-tips li::before { content: "•"; color: var(--accent); flex-shrink: 0; font-size: 16px; line-height: 1; }
+
+  /* Result card */
+  .result-card {
+    background: var(--prompt-bg); border-radius: 10px; padding: 1.5rem;
+    margin-top: 1rem;
+  }
+  .result-card p { color: rgba(255,255,255,0.65); font-size: 14px; margin-bottom: 0; }
+  .result-card p strong { color: #F0EDE6; font-style: normal; }
+
+  /* Upsell */
+  .upsell-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.25rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .upsell-text p { font-size: 14px; color: var(--ink2); margin-bottom: 0; }
+  .upsell-text strong { color: var(--ink); }
+  .upsell-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--ink); color: #F0EDE6;
+    border-radius: 6px; padding: 10px 18px;
+    font-size: 13px; font-weight: 500; text-decoration: none;
+    white-space: nowrap; flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .upsell-btn:hover { background: #333; }
+
+  /* Support links */
+  .support-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 0.75rem; }
+  .support-link {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px 14px; text-decoration: none;
+    font-size: 13px; color: var(--ink2);
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .support-link:hover { border-color: var(--accent); color: var(--accent); }
+
+  .footer {
+    margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--ink3); display: flex;
+    justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+
+  @media (max-width: 520px) {
+    .elements-grid { grid-template-columns: 1fr; }
+    .variants { grid-template-columns: 1fr; }
+    .upsell-card { flex-direction: column; }
+    .footer {
+      flex-direction: column; align-items: center; gap: 4px;
+    }
+  }
+
+      .main-link {
+    transition: all 0.15s;
+  }
+
+  .main-link a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .main-link:hover {
+    transform: scale(0.95);
+  }
+
+    .lesson-tag {
+    display: inline-block; background: var(--accent); color: #fff;
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; padding: 4px 12px; border-radius: 2px; margin-bottom: 1rem;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="breadcrumb">
+    Формули вірусних постів <span>›</span> Інструкція для учасника
+  </div>
+
+  <div class="intro-tag">Старт</div>
+  <h1>Як працювати<br>зі збіркою</h1>
+  <div class="subtitle">Інструкція для учасників · версія 2.0</div>
+
+  <!-- Що це -->
+  <div class="section">
+    <div class="section-label"><span class="icon">📌</span> Що це і навіщо вам це потрібно</div>
+    <p>«Формули вірусних постів» — це 12 структур для створення контенту який читають, зберігають і поширюють. Кожна структура — це готовий інструмент, який допоможе зайти в тему, розгорнути думку і завершити так, щоб читач залишився.</p>
+    <p>Це не теорія про те як треба писати. Це конкретні формули, які вже спрацювали — і які ви можете використати вже сьогодні.</p>
+  </div>
+
+  <!-- Як влаштована збірка -->
+  <div class="section">
+    <div class="section-label"><span class="icon">🗂</span> Як влаштована збірка</div>
+    <p>Ви отримаєте 12 уроків, по одному на день. Кожен урок — це одна формула з 7 елементів:</p>
+
+    <div class="elements-grid">
+      <div class="element-item">
+        <div class="element-arrow">→</div>
+        <div class="element-text"><strong>Коли використовувати</strong>в якій ситуації структура найсильніша</div>
+      </div>
+      <div class="element-item">
+        <div class="element-arrow">→</div>
+        <div class="element-text"><strong>Як це працює</strong>логіка простою мовою</div>
+      </div>
+      <div class="element-item">
+        <div class="element-arrow">→</div>
+        <div class="element-text"><strong>Формула</strong>схема яку можна одразу застосувати</div>
+      </div>
+      <div class="element-item">
+        <div class="element-arrow">→</div>
+        <div class="element-text"><strong>Приклад</strong>готовий пост щоб зрозуміти як це виглядає</div>
+      </div>
+      <div class="element-item">
+        <div class="element-arrow">→</div>
+        <div class="element-text"><strong>Варіанти тем</strong>підказки для різних ніш</div>
+      </div>
+      <div class="element-item">
+        <div class="element-arrow">→</div>
+        <div class="element-text"><strong>Завдання</strong>що написати у своєму пості</div>
+      </div>
+      <div class="element-item" style="grid-column: 1 / -1;">
+        <div class="element-arrow">→</div>
+        <div class="element-text"><strong>Промпт для ШІ</strong>готовий текст, щоб делегувати написання ChatGPT або Claude</div>
+      </div>
+    </div>
+
+    <p style="margin-top: 1.25rem;">Уроки розподілені по 4 блоках відповідно до задачі контенту:</p>
+    <div class="blocks-list">
+      <div class="block-item">
+        <div class="block-num">1</div>
+        <div class="block-info">
+          <div class="block-name">Охоплення <span style="color:var(--ink3); font-weight:400; font-size:12px;">· дні 1–3</span></div>
+          <div class="block-goal">щоб вас почали читати</div>
+        </div>
+      </div>
+      <div class="block-item">
+        <div class="block-num">2</div>
+        <div class="block-info">
+          <div class="block-name">Впізнавання <span style="color:var(--ink3); font-weight:400; font-size:12px;">· дні 4–6</span></div>
+          <div class="block-goal">щоб сказали «це про мене»</div>
+        </div>
+      </div>
+      <div class="block-item">
+        <div class="block-num">3</div>
+        <div class="block-info">
+          <div class="block-name">Довіра <span style="color:var(--ink3); font-weight:400; font-size:12px;">· дні 7–9</span></div>
+          <div class="block-goal">щоб сприймали як експерта</div>
+        </div>
+      </div>
+      <div class="block-item">
+        <div class="block-num">4</div>
+        <div class="block-info">
+          <div class="block-name">Дія <span style="color:var(--ink3); font-weight:400; font-size:12px;">· дні 10–12</span></div>
+          <div class="block-goal">щоб читачі писали, коментували і приходили в роботу</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Як працювати -->
+  <div class="section">
+    <div class="section-label"><span class="icon">⚡️</span> Як працювати з кожним уроком</div>
+    <p>Три простих кроки — і пост готовий. Весь процес займає ~30 хвилин:</p>
+
+    <div class="steps">
+
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-num">1</div>
+          <div class="step-title">Читайте урок цілком</div>
+        </div>
+        <div class="step-body">
+          <p>Не пропускайте жоден блок, особливо «Коли використовувати» і «Варіанти тем». Саме там ви знайдете підказку для себе.</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-num">2</div>
+          <div class="step-title">Оберіть варіант написання</div>
+        </div>
+        <div class="step-body">
+          <p>Два рівноцінних варіанти — обирайте зручніший для себе.</p>
+          <div class="variants">
+            <div class="variant">
+              <div class="variant-label">Варіант А — пишете самі</div>
+              <ul class="variant-list">
+                <li>Беріть завдання з уроку</li>
+                <li>Відкривайте нотатки або Google Doc</li>
+                <li>Пишіть за формулою з прикладом перед очима</li>
+                <li>Не намагайтесь одразу зробити ідеально — просто пишіть</li>
+              </ul>
+            </div>
+            <div class="variant">
+              <div class="variant-label b">Варіант Б — через ШІ</div>
+              <ul class="variant-list">
+                <li>Копіюйте промпт з уроку</li>
+                <li>Заповніть дужки своїми даними</li>
+                <li>Вставте в ChatGPT або Claude</li>
+                <li>Прочитайте і відредагуйте — кілька ітерацій це нормально</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-num">3</div>
+          <div class="step-title">Публікуйте</div>
+        </div>
+        <div class="step-body">
+          <p>Не тримайте пост в нотатках. Навіть недосконалий опублікований пост сильніший за ідеальний, який чекає на кращі часи. Реакція аудиторії — найкращий зворотній зв'язок.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-icon">💡</div>
+      <div class="tip-text">Хочете перевірити пост перед публікацією? Натисніть кнопку <strong>«Перевірити пост 🔍»</strong> в боті, вставте текст — і отримайте розбір вже за хвилину.</div>
+    </div>
+  </div>
+
+  <!-- Бонус стратегія -->
+  <div class="section">
+    <div class="section-label"><span class="icon">🎁</span> Бонус: 12 постів як стратегія для Instagram</div>
+    <p>Це не просто збірка — це готова контентна база для вашого профілю. Ось як перетворити 12 формул на повноцінну стратегію:</p>
+
+    <div class="strategy-steps">
+      <div class="strategy-step">
+        <div class="strategy-step-num">01</div>
+        <div class="strategy-step-content">
+          <div class="strategy-step-title">Напишіть всі 12 постів</div>
+          <div class="strategy-step-text">Після 12 днів у вас буде 12 сильних матеріалів які охоплюють всі етапи шляху клієнта: від знайомства з вами до рішення купити.</div>
+        </div>
+      </div>
+      <div class="strategy-step">
+        <div class="strategy-step-num">02</div>
+        <div class="strategy-step-content">
+          <div class="strategy-step-title">Опублікуйте їх у своєму профілі</div>
+          <div class="strategy-step-text">Можна публікувати по одному щодня або одразу, щоб створити інсталендінг. Аудиторія таким чином проходить повний шлях довіри.</div>
+        </div>
+      </div>
+      <div class="strategy-step">
+        <div class="strategy-step-num">03</div>
+        <div class="strategy-step-content">
+          <div class="strategy-step-title">Закріпіть пости які відповідають вашій поточній цілі</div>
+          <div class="strategy-step-text">Instagram дозволяє закріплювати 3 пости вгорі профілю. Орієнтуйтесь на:</div>
+          <ul class="pin-tips">
+            <li>Що зараз найважливіше для вашого бізнесу: новий продукт, консультації, підписники?</li>
+            <li>Який пост найкраще пояснює чим ви займаєтесь і для кого?</li>
+            <li>Який отримав найбільше реакцій і збережень?</li>
+          </ul>
+          <p style="margin-top: 0.75rem; font-size: 14px;">Міняйте закріплені пости залежно від поточного фокусу. Всі 12 формул достатньо сильні щоб бути у закріпленому — обирайте що актуально зараз.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-card" style="margin-top: 1rem;">
+      <div class="tip-icon">💡</div>
+      <div class="tip-text">Перевірте чи ваші пости створені <strong>для людини яка вже готова платити</strong>, чи лише для тих хто цікавиться. Це різна аудиторія.</div>
+    </div>
+
+    <div class="result-card">
+      <p><strong>Результат:</strong> профіль який продає навіть коли ви не публікуєте нічого нового. Новий відвідувач бачить закріплені пости — і одразу розуміє хто ви, чим займаєтесь і чому тут варто залишитись.</p>
+    </div>
+
+    <div style="margin-top: 1.5rem;">
+      <p style="margin-bottom: 0.75rem;">Інші елементи упаковки акаунту ви можете створити з допомогою:</p>
+      <div class="upsell-card">
+        <div class="upsell-text">
+          <p><strong>Пакет матеріалів «Впорядкований маркетинг»</strong></p>
+          <p>Повна упаковка акаунту: від шапки профілю до системи продажів</p>
+        </div>
+        <a href="https://secure.wayforpay.com/payment/vm2026" target="_blank" class="upsell-btn">
+          Дізнатись більше →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Є питання -->
+  <div class="section">
+    <div class="section-label"><span class="icon">💬</span> Є питання?</div>
+    <p>Якщо щось незрозуміло або хочете поділитись результатом — напишіть у відповідь на будь-яке повідомлення бота. Ми читаємо кожне ваше повідомлення!</p>
+    <div class="support-links">
+      <a href="https://t.me/+Gjoz3VLREf0xNDdi" target="_blank" class="support-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Технічна підтримка
+      </a>
+    </div>
+  </div>
+
+
+  <div class="footer">
+    <span>Формули вірусних постів</span>
+    <div class="lesson-tag main-link"><a href="./index.html"> Головна сторінка </a></div>
+    <div class="lesson-tag main-link"><a href="./urok-1.html"> Наступний урок </a></div>
+    <span>Інструкція для учасника · версія 2.0</span>
+  </div>
+</div>
+</body>
+</html>
